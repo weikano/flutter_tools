@@ -60,7 +60,7 @@ class Daily {
         dayCodeDesc = json['cond_txt_d'],
         nightCodeDesc = json['cond_txt_n'],
         date = json['date'],
-        hum = int.parse(json['date'].toString()),
+        hum = int.parse(json['hum'].toString()),
         pcpn = double.parse(json['pcpn'].toString()),
         pres = int.parse(json['pres'].toString()),
         maxTmp = int.parse(json['tmp_max'].toString()),
@@ -70,8 +70,8 @@ class Daily {
         windDegree = int.parse(json['wind_deg'].toString()),
         windDir = json['wind_dir'],
         windSc = json['wind_sc'],
-        pop = int.parse(json['wind_sc'].toString()),
-        windSpeed = int.parse(json['wind_sc'].toString());
+        pop = int.parse(json['pop'].toString()),
+        windSpeed = int.parse(json['wind_spd'].toString());
 }
 
 class Hourly {
@@ -119,7 +119,7 @@ class Now {
   final String condDesc;
   final int fl;
   final int hum;
-  final int pcpn;
+  final double pcpn;
   final int pres;
   final int tmp;
   final int vis;
@@ -130,10 +130,10 @@ class Now {
 
   Now.fromJSON(Map<String, dynamic> json)
       : condDesc = json['cond_txt'],
-        condCode = int.parse(json['cond_txt'].toString()),
+        condCode = int.parse(json['cond_code'].toString()),
         fl = int.parse(json['fl'].toString()),
         hum = int.parse(json['hum'].toString()),
-        pcpn = int.parse(json['pcpn'].toString()),
+        pcpn = double.parse(json['pcpn'].toString()),
         pres = int.parse(json['pres'].toString()),
         tmp = int.parse(json['tmp'].toString()),
         vis = int.parse(json['vis'].toString()),
@@ -182,8 +182,8 @@ class WeatherReport {
 
     List daily = rsp['daily_forecast'];
     dailyReports = daily.map((m) => Daily.fromJSON(m)).toList();
-    List hour = rsp['hourly'];
-    hourlyReports = hour.map((m) => Hourly.fromJSON(m)).toList();
+//    List hour = rsp['hourly'];
+//    hourlyReports = hour.map((m) => Hourly.fromJSON(m)).toList();
     List life = rsp['lifestyle'];
     lifestyles = life.map((m) => Lifestyle.fromJSON(m)).toList();
   }
