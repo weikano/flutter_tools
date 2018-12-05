@@ -171,6 +171,9 @@ class WeatherReport {
   WeatherReport.fail() {
     status = -1;
   }
+  WeatherReport.loading() {
+    status = 1;
+  }
 
   WeatherReport.fromResponse(Map<String, dynamic> rsp) {
     basic = WeatherBasic.fromJSON(rsp['basic']);

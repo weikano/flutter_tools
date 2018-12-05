@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'api.dart';
+import 'const.dart';
 
 class WeatherPage extends StatefulWidget {
   static var routeName = '/weather';
@@ -10,10 +12,25 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherState extends State<WeatherPage> {
+  WeatherReport _report = WeatherReport.loading();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWeatherInfo();
+  }
+
+  void _loadWeatherInfo() async {
+    var report = await getReport();
+    setState(() {
+      _report = report;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('没有实现'),
+      child: Text("Code ${_report.status}"),
     );
   }
 }
