@@ -168,23 +168,36 @@ class WeatherReport {
       this.lifestyles,
       this.now,
       this.update});
+
   WeatherReport.fail() {
     status = -1;
   }
+
   WeatherReport.loading() {
     status = 1;
   }
 
   WeatherReport.fromResponse(Map<String, dynamic> rsp) {
-    basic = WeatherBasic.fromJSON(rsp['basic']);
-    now = Now.fromJSON(rsp['now']);
-    update = Update.fromJSON(rsp['update']);
-
-    List daily = rsp['daily_forecast'];
-    dailyReports = daily.map((m) => Daily.fromJSON(m)).toList();
-//    List hour = rsp['hourly'];
-//    hourlyReports = hour.map((m) => Hourly.fromJSON(m)).toList();
-    List life = rsp['lifestyle'];
-    lifestyles = life.map((m) => Lifestyle.fromJSON(m)).toList();
+    if (rsp.containsKey('basic')) {
+      basic = WeatherBasic.fromJSON(rsp['basic']);
+    }
+    if (rsp.containsKey('now')) {
+      now = Now.fromJSON(rsp['now']);
+    }
+    if (rsp.containsKey('update')) {
+      update = Update.fromJSON(rsp['update']);
+    }
+    if (rsp.containsKey('daily_forecast')) {
+      List daily = rsp['daily_forecast'];
+      dailyReports = daily.map((m) => Daily.fromJSON(m)).toList();
+    }
+    if (rsp.containsKey('hourly')) {
+      List hour = rsp['hourly'];
+      hourlyReports = hour.map((m) => Hourly.fromJSON(m)).toList();
+    }
+    if (rsp.containsKey('lifestyle')) {
+      List life = rsp['lifestyle'];
+      lifestyles = life.map((m) => Lifestyle.fromJSON(m)).toList();
+    }
   }
 }
