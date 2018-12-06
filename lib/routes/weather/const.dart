@@ -1,11 +1,31 @@
 const String HOURLY = 'https://free-api.heweather.com/s6/weather/hourly';
-const String FORECASE = 'https://free-api.heweather.com/s6/weather/forecast';
-const String NOW = 'https://free-api.heweather.com/s6/weather/now';
+const String FORECAST = 'https://free-api.heweather.com/s6/weather/forecast';
+const String NOW =
+    'https://free-api.heweather.com/s6/weather/now?localtion=auto_ip&key=$KEY';
 const String LIFESTYLE = 'https://free-api.heweather.com/s6/weather/lifestyle';
 const String WEATHER =
     'https://free-api.heweather.com/s6/weather?location=auto_ip&key=$KEY';
 
 const String KEY = '60a16381a4024ee0a03dfa6d980def43';
+
+const Map<String, String> LIFESTYLES = <String, String>{
+  'spi': '防晒指数',
+  'fsh': '钓鱼指数',
+  'ptfc': '交通指数',
+  'airc': '晾晒指数',
+  'mu': '化妆指数',
+  'gl': '太阳镜指数',
+  'ag': '过敏指数',
+  'ac': '空调开启指数',
+  'air': '空气污染扩散条件指数',
+  'uv': '紫外线指数',
+  'trav': '旅游指数',
+  'sport': '运动指数',
+  'flu': '感冒指数',
+  'drsg': '穿衣指数',
+  'cw': '洗车指数',
+  'comf': '舒适度指数',
+};
 
 class WeatherBasic {
   final String cid;
@@ -53,6 +73,10 @@ class Daily {
   final String windDir;
   final String windSc;
   final int windSpeed;
+  final String sr;
+  final String ss;
+  final String mr;
+  final String ms;
 
   Daily.fromJSON(Map<String, dynamic> json)
       : dayCodeCond = int.parse(json['cond_code_d'].toString()),
@@ -71,6 +95,10 @@ class Daily {
         windDir = json['wind_dir'],
         windSc = json['wind_sc'],
         pop = int.parse(json['pop'].toString()),
+        sr = json['sr'],
+        ss = json['ss'],
+        mr = json['mr'],
+        ms = json['ms'],
         windSpeed = int.parse(json['wind_spd'].toString());
 }
 
@@ -169,15 +197,27 @@ class WeatherReport {
       this.now,
       this.update});
 
-  WeatherReport.fail() {
+  WeatherReport.ofFail() {
     status = -1;
   }
 
-  WeatherReport.loading() {
+  WeatherReport.ofLoading() {
     status = 1;
   }
 
-  WeatherReport.fromResponse(Map<String, dynamic> rsp) {
+  bool loading() {
+    return status == 1;
+  }
+
+  bool success() {
+    return status == 0;
+  }
+
+  bool fail() {
+    return status == -1;
+  }
+
+  WeatherReport.ofSuccess(Map<String, dynamic> rsp) {
     if (rsp.containsKey('basic')) {
       basic = WeatherBasic.fromJSON(rsp['basic']);
     }

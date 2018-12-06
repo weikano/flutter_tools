@@ -5,6 +5,7 @@ import 'dart:io';
 
 class DeviceInfoPage extends StatelessWidget {
   static var routeName = '/deviceinfo';
+  static var title = '设备信息';
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class DeviceInfoPage extends StatelessWidget {
     }
     return BaseInfoPage(
       child: child,
-      title: '关于手机',
+      title: title,
     );
   }
 }

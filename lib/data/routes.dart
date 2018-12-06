@@ -4,49 +4,75 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tools/routes/info/screen_info.dart';
 import 'package:flutter_tools/routes/info/device_info.dart';
 import 'package:flutter_tools/routes/weather/weather.dart';
+import 'package:flutter_tools/routes/zhihu/zhihu.dart';
+import 'package:flutter_tools/routes/gank/gankio.dart';
 
 class RouteData {
   const RouteData(
       {@required this.title,
-      this.icon,
+      this.iconUrl,
       this.subTitle,
       @required this.routeName,
       @required this.builder});
 
   final String title;
-  final IconData icon;
   final String subTitle;
   final String routeName;
   final WidgetBuilder builder;
+  final String iconUrl;
+}
+
+deviceIcon() {
+  String icon;
+  if (Platform.isWindows) {
+    icon = 'device_windows';
+  } else if (Platform.isAndroid) {
+    icon = 'device_android';
+  } else if (Platform.isIOS) {
+    icon = 'device_ios';
+  } else if (Platform.isLinux) {
+    icon = 'device_linux';
+  } else if (Platform.isMacOS) {
+    icon = 'device_mac';
+  } else {
+    icon = 'device_other';
+  }
+  return 'assets/icons/$icon.png';
 }
 
 RouteData _screenInfo = RouteData(
-  title: '屏幕信息',
-  subTitle: '屏幕分辨率等信息',
-  icon: Platform.isIOS
-      ? Icons.phone_iphone
-      : (Platform.isAndroid ? Icons.phone_android : Icons.device_unknown),
-  builder: (BuildContext context) {
-    return ScreenInfoPage();
-  },
+  title: ScreenInfoPage.title,
+  iconUrl: 'assets/icons/screen_info.png',
+  builder: (BuildContext context) => ScreenInfoPage(),
   routeName: ScreenInfoPage.routeName,
 );
 
 RouteData _deviceInfo = RouteData(
-  title: '关于手机',
-  subTitle: '手机系统配置等信息',
-  icon: Icons.info,
-  builder: (BuildContext context) {
-    return DeviceInfoPage();
-  },
+  title: DeviceInfoPage.title,
+  iconUrl: deviceIcon(),
+  builder: (BuildContext context) => DeviceInfoPage(),
   routeName: DeviceInfoPage.routeName,
 );
 
 RouteData _weather = RouteData(
-    title: "天气预报",
-    icon: Icons.data_usage,
+    title: WeatherPage.title,
+    iconUrl: 'assets/icons/weather.png',
     routeName: WeatherPage.routeName,
     builder: (BuildContext context) => WeatherPage());
+
+RouteData _zhihu = RouteData(
+  title: ZhihuPage.title,
+  iconUrl: 'assets/icons/zhihu.png',
+  routeName: ZhihuPage.routeName,
+  builder: (BuildContext context) => ZhihuPage(),
+);
+
+RouteData _gankio = RouteData(
+  title: GankIOPage.title,
+  iconUrl: 'assets/icons/gankio.png',
+  routeName: GankIOPage.routeName,
+  builder: (BuildContext context) => GankIOPage(),
+);
 
 final List<RouteData> allRoutes = _buildAllRoutes();
 
@@ -55,5 +81,7 @@ _buildAllRoutes() {
     _screenInfo,
     _deviceInfo,
     _weather,
+    _zhihu,
+    _gankio,
   ];
 }

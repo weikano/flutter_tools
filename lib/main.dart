@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int columnCount = 2;
+    final int columnCount = 3;
 //    final int columnCount =
 //        MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3;
     return MaterialApp(
@@ -53,6 +53,7 @@ class _Home extends StatelessWidget {
 const Color _defaultColor = Color(0xFF003D75);
 
 class _RouteItem extends StatelessWidget {
+  _RouteItem({this.onTap, this.data});
   final VoidCallback onTap;
   final RouteData data;
   @override
@@ -65,22 +66,19 @@ class _RouteItem extends StatelessWidget {
       highlightColor: Colors.transparent,
       onPressed: onTap,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Icon(
-              data.icon,
-              size: 60.0,
-              color: isDark ? Colors.white : _defaultColor,
-            ),
+          Image.asset(
+            data.iconUrl,
+            width: 60.0,
+            height: 60.0,
           ),
           const SizedBox(
-            height: 10.0,
+            height: 4.0,
           ),
           Container(
-            height: 48.0,
+            height: 24.0,
             alignment: Alignment.center,
             child: Text(
               data.title,
@@ -94,6 +92,4 @@ class _RouteItem extends StatelessWidget {
       ),
     );
   }
-
-  _RouteItem({this.onTap, this.data});
 }

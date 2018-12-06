@@ -4,7 +4,7 @@ import 'base_info_page.dart';
 
 class ScreenInfoPage extends StatefulWidget {
   static var routeName = '/screeninfo';
-
+  static var title = '屏幕信息';
   @override
   State<StatefulWidget> createState() {
     return _ScreenInfoState();
