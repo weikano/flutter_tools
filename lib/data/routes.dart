@@ -5,7 +5,7 @@ import 'package:flutter_tools/routes/info/screen_info.dart';
 import 'package:flutter_tools/routes/info/device_info.dart';
 import 'package:flutter_tools/routes/weather/weather.dart';
 import 'package:flutter_tools/routes/zhihu/zhihu.dart';
-import 'package:flutter_tools/routes/gank/gankio.dart';
+import 'package:flutter_tools/routes/gankio/gankio.dart';
 
 class RouteData {
   const RouteData(

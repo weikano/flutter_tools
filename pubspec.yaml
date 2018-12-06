@@ -21,6 +21,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   device_info: 0.2.0
   shared_preferences: 0.4.3
+  sqflite: 0.13.0
+  rx_command: 4.0.2
 
 dev_dependencies:
   flutter_test:

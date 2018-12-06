@@ -6,7 +6,13 @@ class ZhihuPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
+    return null;
+  }
+}
+
+class _ZhihuState extends State<ZhihuPage> {
+  @override
+  Widget build(BuildContext context) {
     return null;
   }
 }
