@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tools/routes/gankio/main.dart';
 import 'package:flutter_tools/routes/info/screen_info.dart';
 import 'package:flutter_tools/routes/info/device_info.dart';
 import 'package:flutter_tools/routes/weather/weather.dart';
@@ -68,10 +69,10 @@ RouteData _zhihu = RouteData(
 );
 
 RouteData _gankio = RouteData(
-  title: GankIOPage.title,
+  title: GankMainPage.title,
   iconUrl: 'assets/icons/gankio.png',
   routeName: GankIOPage.routeName,
-  builder: (BuildContext context) => GankIOPage(),
+  builder: (BuildContext context) => GankMainPage(),
 );
 
 final List<RouteData> allRoutes = _buildAllRoutes();

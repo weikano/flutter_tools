@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tools/themes.dart';
 
 import 'data/routes.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
 //    final int columnCount =
 //        MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3;
     return MaterialApp(
+      theme: kLightTheme,
       title: 'tools',
       home: _Home(columnCount),
       routes: _buildRoutes(),

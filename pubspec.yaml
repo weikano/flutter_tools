@@ -23,6 +23,9 @@ dependencies:
   shared_preferences: 0.4.3
   sqflite: 0.13.0
   rx_command: 4.0.2
+  url_launcher: 4.0.2
+  intl: 0.15.7
+
 
 dev_dependencies:
   flutter_test:

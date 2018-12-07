@@ -5,6 +5,7 @@ import 'const.dart';
 class WeatherPage extends StatefulWidget {
   static var routeName = '/weather';
   static var title = '天气预报';
+
   @override
   State<StatefulWidget> createState() {
     return _WeatherState();
@@ -20,6 +21,7 @@ class _WeatherState extends State<WeatherPage> {
 
   Widget _buildNow() {
     final Daily today = _report.dailyReports[0];
+    //todo 考虑用Table实现
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(
