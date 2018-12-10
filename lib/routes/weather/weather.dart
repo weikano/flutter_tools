@@ -19,71 +19,86 @@ class _WeatherState extends State<WeatherPage> {
     return getReportTest();
   }
 
-  Widget _buildNow() {
-    final Daily today = _report.dailyReports[0];
-    //todo 考虑用Table实现
-    return Container(
+  Widget _buildTableCell(String label, dynamic value) {
+    return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Text(
-              '今天: 现在${today.dayCodeDesc}。最高气温${today.maxTmp}。今晚大部${today.nightCodeDesc},最低气温${today.minTmp}'),
-          Divider(
-            height: 6,
+          Text(label),
+          SizedBox(
+            height: 4,
           ),
-          _buildNowSection('日出时间', today.sr, '日落时间', today.ss),
-          _buildNowSection('月升时间', today.mr, '月落时间', today.ms),
-          _buildNowSection('降雨概率', '${today.pop}%', '湿度', '${today.hum}%'),
-          _buildNowSection('降水量', '${today.pcpn}毫升', '气压', '${today.pres}百帕'),
-          _buildNowSection(
-              '能见度', '${today.vis}公里', '紫外线指数', '${today.indexUv}'),
+          Text(value.toString()),
         ],
       ),
     );
   }
 
-  Widget _buildNowSection(
-      String label1, dynamic value1, String label2, dynamic value2) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    label1,
-                    textAlign: TextAlign.start,
-                  ),
-                  Text(
-                    value1.toString(),
-                    textAlign: TextAlign.start,
-                  ),
-                ],
-              ),
+  Widget _buildNow() {
+    final Daily today = _report.dailyReports[0];
+    //todo 考虑用Table实现
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Table(
+        border: TableBorder.all(
+//          color: Colors.transparent,
+//          width: 20,
             ),
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    label2,
-                    textAlign: TextAlign.start,
-                  ),
-                  Text(
-                    value2.toString(),
-                    textAlign: TextAlign.start,
-                  ),
-                ],
+        children: <TableRow>[
+          TableRow(
+            children: <TableCell>[
+              TableCell(
+                child: _buildTableCell('日出时间', today.sr),
               ),
-            )
-          ],
-        ),
-        Divider(
-          height: 4.0,
-        ),
-      ],
+              TableCell(
+                child: _buildTableCell('日落时间', today.ss),
+              )
+            ],
+          ),
+          TableRow(
+            children: <TableCell>[
+              TableCell(
+                child: _buildTableCell('月升时间', today.mr),
+              ),
+              TableCell(
+                child: _buildTableCell('月落时间', today.ms),
+              ),
+            ],
+          ),
+          TableRow(
+            children: <TableCell>[
+              TableCell(
+                child: _buildTableCell('降雨概率', '${today.pop}%'),
+              ),
+              TableCell(
+                child: _buildTableCell('湿度', '${today.hum}%'),
+              ),
+            ],
+          ),
+          TableRow(
+            children: <TableCell>[
+              TableCell(
+                child: _buildTableCell('降水量', '${today.pcpn}毫升'),
+              ),
+              TableCell(
+                child: _buildTableCell('气压', '${today.pres}百帕'),
+              ),
+            ],
+          ),
+          TableRow(
+            children: <TableCell>[
+              TableCell(
+                child: _buildTableCell('能见度', '${today.vis}公里'),
+              ),
+              TableCell(
+                child: _buildTableCell('紫外线指数', '${today.indexUv}'),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
