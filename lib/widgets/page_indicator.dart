@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class PageIndicator extends StatefulWidget {
   Color unselectedColor = Colors.transparent;
   Color selectedColor = Colors.white;
-  final PageController controller;
+  final PageController child;
 
   @override
   State<StatefulWidget> createState() {
@@ -11,13 +11,16 @@ class PageIndicator extends StatefulWidget {
   }
 
   PageIndicator(
-      {@required this.controller, this.unselectedColor, this.selectedColor});
+      {@required this.child, this.unselectedColor, this.selectedColor});
 }
 
 class _PageIndicatorState extends State<PageIndicator> {
   @override
   void initState() {
     super.initState();
+    widget.child.addListener(() {
+      print(widget.child.page);
+    });
   }
 
   @override

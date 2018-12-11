@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'dart:math';
 import 'const.dart';
 import 'api.dart';
+import 'zhihu_item.dart';
+import 'package:flutter_tools/basic.dart';
 
 class ZhihuPage extends StatefulWidget {
   static var routeName = '/zhihu';
@@ -14,7 +16,7 @@ class ZhihuPage extends StatefulWidget {
   }
 }
 
-class _ZhihuState extends State<ZhihuPage> {
+class _ZhihuState extends StateWithFuture<ZhihuPage> {
   PageController _controller;
   ScrollController _scroller;
   double scrollHeight;
@@ -32,7 +34,7 @@ class _ZhihuState extends State<ZhihuPage> {
     _loadData();
   }
 
-  void _loadData() async {
+  Future<void> _loadData() async {
     _news = await news();
     setState(() {});
   }
@@ -47,6 +49,7 @@ class _ZhihuState extends State<ZhihuPage> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData data = MediaQuery.of(context);
+
     return MediaQuery.removePadding(
       removeTop: true,
       context: context,
@@ -98,49 +101,53 @@ class _ZhihuState extends State<ZhihuPage> {
       NotificationListenerCallback<ScrollUpdateNotification> notification) {
     return NotificationListener(
       onNotification: notification,
-      child: ListView.builder(
-        controller: _scroller,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return _buildTopStories(data);
-          }
-          var story = data.stories[index - 1];
-          return SizedBox(
-            height: 80,
-            child: InkWell(
-              onTap: () {
-                _jumpToStory(story);
-              },
-              child: Container(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        story.title,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
+      child: RefreshIndicator(
+        onRefresh: _loadData,
+        child: ListView.builder(
+          controller: _scroller,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              return _buildTopStories(data);
+            }
+            var story = data.stories[index - 1];
+            return SizedBox(
+              height: 80,
+              child: InkWell(
+                excludeFromSemantics: true,
+                onTap: () {
+                  _jumpToStory(story);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          story.title,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                    AspectRatio(
-                      aspectRatio: 16.0 / 9.0,
-                      child: Image.network(
-                        story.images[0],
-                        fit: BoxFit.fitWidth,
+                      AspectRatio(
+                        aspectRatio: 16.0 / 9.0,
+                        child: Image.network(
+                          story.images[0],
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
-        itemCount: data.stories.length + 1,
+            );
+          },
+          itemCount: data.stories.length + 1,
+        ),
       ),
     );
   }
@@ -155,7 +162,9 @@ class _ZhihuState extends State<ZhihuPage> {
           itemBuilder: (BuildContext context, int index) {
             var item = data.topStories[index % data.topStories.length];
             return GestureDetector(
-              onTap: _jumpToStory(item),
+              onTap: () {
+                _jumpToStory(item);
+              },
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -196,14 +205,16 @@ class _ZhihuState extends State<ZhihuPage> {
     );
   }
 
-  _jumpToStory(dynamic item) {
-    switch (item.runtimeType) {
-      case TopStory:
-        print((item as TopStory).title);
-        break;
-      case Story:
-        print((item as Story).title);
-        break;
-    }
+  _jumpToStory(ZhihuItem item) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+      return ZhihuItemPage(
+        item: item,
+      );
+    }));
+//    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+//      return ZhihuItemPage(
+//        item: item,
+//      );
+//    }));
   }
 }

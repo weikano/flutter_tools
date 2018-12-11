@@ -5,3 +5,8 @@ Future<CONST.News> news() async {
   Map<String, dynamic> json = await NETWORK.get(CONST.NEWS);
   return CONST.News.fromJSON(json);
 }
+
+Future<CONST.NewsContent> content(int id) async {
+  Map<String, dynamic> json = await NETWORK.get('${CONST.CONTENT}/$id');
+  return CONST.NewsContent.fromJSON(json);
+}
