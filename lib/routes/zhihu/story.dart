@@ -44,14 +44,30 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_content == null) {
+      return Material(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Material(
       child: MediaQuery.removePadding(
         context: context,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _buildContent(),
-          ),
+        child: Stack(
+          children: <Widget>[
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: _buildContent(),
+              ),
+            ),
+            _extra == null
+                ? null
+                : _ExtraWidget(
+                    extra: _extra,
+                  ),
+          ],
         ),
       ),
     );
@@ -241,5 +257,55 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
     _content = await content(widget.item.id);
     _extra = await extra(widget.item.id);
     setState(() {});
+  }
+}
+
+class _ExtraWidget extends StatelessWidget {
+  final ZhihuStoryExtra extra;
+  _ExtraWidget({this.extra});
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                IconButton(icon: Icon(Icons.message), onPressed: () {}),
+                Positioned(
+                  top: 4,
+                  right: 4,
+                  child: Text(
+                    extra.total.toString(),
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: _padding,
+            ),
+            Stack(
+              children: <Widget>[
+                IconButton(icon: Icon(Icons.favorite), onPressed: () {}),
+                Positioned(
+                  top: 4,
+                  right: 4,
+                  child: Text(
+                    extra.popularity.toString(),
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
