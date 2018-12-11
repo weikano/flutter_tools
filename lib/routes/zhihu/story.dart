@@ -4,26 +4,41 @@ import 'api.dart';
 import 'dart:ui';
 import 'package:flutter_tools/basic.dart';
 
-class ZhihuItemPage extends StatefulWidget {
-  final ZhihuItem item;
+class ZhihuStoryPage extends StatefulWidget {
+  final ZhihuStoryBase item;
 
-  ZhihuItemPage({this.item});
+  ZhihuStoryPage({this.item});
 
   @override
   State<StatefulWidget> createState() {
-    return _ZhihuItemState();
+    return _ZhihuStoryState();
   }
 }
 
-class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
-  NewsContent _content;
+const double _padding = 12.0;
+const double _aspectRatio = 16.0 / 9.0;
+
+class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
+  final double _titleSize = 20;
+  final double _paraSize = 16;
+  final double _imageSourceSize = 14;
+  final double _questionTitleSize = 16;
+  final double _authorSize = 16;
+  final double _bioSize = 14;
+  final double _avatarSize = 24;
+
+  final EdgeInsets _paddingParas =
+      const EdgeInsets.symmetric(vertical: _padding / 2, horizontal: _padding);
+
+  ZhihuStory _content;
+  ZhihuStoryExtra _extra;
   double _appBarHeight;
 
   @override
   void initState() {
     super.initState();
     _appBarHeight =
-        window.physicalSize.width * 9 / 16 / window.devicePixelRatio;
+        window.physicalSize.width * _aspectRatio / window.devicePixelRatio;
     _loadContent();
   }
 
@@ -44,14 +59,14 @@ class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
 
   List<Widget> _buildContent() {
     List<Widget> contents = <Widget>[
-      AspectRatio(aspectRatio: 16.0 / 9.0, child: _buildBackground()),
+      AspectRatio(aspectRatio: _aspectRatio, child: _buildBackground()),
     ];
     if (_content != null) {
       contents.add(_buildQuestionTitle());
       contents.add(_buildAuthorInfo());
       contents.addAll(_buildParas());
       contents.add(SizedBox(
-        height: 24,
+        height: 80,
       ));
     }
     return contents;
@@ -61,8 +76,8 @@ class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
     if (_content.parsed.questionTitle != null &&
         _content.parsed.questionTitle.isNotEmpty) {
       return Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 12.0).copyWith(top: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: _padding)
+            .copyWith(top: _padding),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -70,7 +85,7 @@ class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
             textAlign: TextAlign.start,
             style: TextStyle(
               color: Colors.black,
-              fontSize: 16,
+              fontSize: _questionTitleSize,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -85,35 +100,39 @@ class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
 
   Widget _buildAuthorInfo() {
     return Padding(
-      padding: const EdgeInsets.all(12.0).copyWith(top: 0, left: 0),
+      padding: const EdgeInsets.all(_padding).copyWith(bottom: _padding / 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Image.network(
             _content.parsed.avatar,
-            width: 50,
-            height: 50,
+            width: _avatarSize,
+            height: _avatarSize,
             fit: BoxFit.scaleDown,
           ),
           SizedBox(
-            width: 6,
+            width: 3,
           ),
           Text(
             _content.parsed.author,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: _authorSize,
               color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
           ),
           SizedBox(
-            width: 6,
+            width: 3,
           ),
-          Text(
-            _content.parsed.bio,
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 16,
+          Expanded(
+            child: Text(
+              _content.parsed.bio,
+              textAlign: TextAlign.start,
+              maxLines: 2,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: _bioSize,
+              ),
             ),
           )
         ],
@@ -124,10 +143,10 @@ class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
   List<Widget> _buildParas() {
     return _content.parsed.ps.map((para) {
       Widget content;
-      if (para.type == ContentPType.text) {
+      if (para.type == ZhihuParaType.text) {
         content = Text(
           para.content,
-          style: TextStyle(color: Colors.black87, fontSize: 15),
+          style: TextStyle(color: Colors.black87, fontSize: _paraSize),
         );
       } else {
         content = Image.network(
@@ -136,7 +155,7 @@ class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
         );
       }
       return Padding(
-        padding: const EdgeInsets.all(6.0),
+        padding: _paddingParas,
         child: content,
       );
     }).toList();
@@ -155,7 +174,7 @@ class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
     Widget title = Text(
       _title(),
       style: TextStyle(
-        fontSize: 20,
+        fontSize: _titleSize,
         color: Colors.white,
         fontWeight: FontWeight.w600,
       ),
@@ -164,21 +183,20 @@ class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
     Widget image;
     if (_content != null) {
       desc = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12)
-            .copyWith(top: 12, bottom: 12),
+        padding: const EdgeInsets.all(_padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             title,
             SizedBox(
-              height: 12,
+              height: _padding,
             ),
             Text(
               '图片:${_content.imageSource}',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 14,
+                fontSize: _imageSourceSize,
               ),
             ),
           ],
@@ -221,6 +239,7 @@ class _ZhihuItemState extends StateWithFuture<ZhihuItemPage> {
 
   void _loadContent() async {
     _content = await content(widget.item.id);
+    _extra = await extra(widget.item.id);
     setState(() {});
   }
 }

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'dart:math';
 import 'const.dart';
 import 'api.dart';
-import 'zhihu_item.dart';
+import 'story.dart';
 import 'package:flutter_tools/basic.dart';
 
 class ZhihuPage extends StatefulWidget {
@@ -21,7 +21,7 @@ class _ZhihuState extends StateWithFuture<ZhihuPage> {
   ScrollController _scroller;
   double scrollHeight;
   double _currentPixel = 0;
-  News _news;
+  ZhihuNews _news;
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _ZhihuState extends StateWithFuture<ZhihuPage> {
     return true;
   }
 
-  Widget _buildStories(News data,
+  Widget _buildStories(ZhihuNews data,
       NotificationListenerCallback<ScrollUpdateNotification> notification) {
     return NotificationListener(
       onNotification: notification,
@@ -152,7 +152,7 @@ class _ZhihuState extends StateWithFuture<ZhihuPage> {
     );
   }
 
-  Widget _buildTopStories(News data) {
+  Widget _buildTopStories(ZhihuNews data) {
     _controller = PageController(initialPage: data.topStories.length * 50 + 1);
     return AspectRatio(
       aspectRatio: 16.0 / 9.0,
@@ -161,60 +161,81 @@ class _ZhihuState extends StateWithFuture<ZhihuPage> {
           controller: _controller,
           itemBuilder: (BuildContext context, int index) {
             var item = data.topStories[index % data.topStories.length];
-            return GestureDetector(
+            return _PageItemView(
+              item: item,
               onTap: () {
                 _jumpToStory(item);
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(item.image),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0)
-                        .copyWith(bottom: 24.0),
-                    child: Text(
-                      item.title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        shadows: <Shadow>[
-                          Shadow(
-                            offset: Offset(2.0, 2.0),
-                            blurRadius: 3.0,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                          Shadow(
-                            offset: Offset(2.0, 2.0),
-                            blurRadius: 8.0,
-                            color: Color.fromARGB(255, 0, 0, 0),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             );
           }),
     );
   }
 
-  _jumpToStory(ZhihuItem item) {
+  _jumpToStory(ZhihuStoryBase item) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      return ZhihuItemPage(
+      return ZhihuStoryPage(
         item: item,
       );
     }));
-//    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-//      return ZhihuItemPage(
-//        item: item,
-//      );
-//    }));
   }
+}
+
+class _PageItemView extends StatefulWidget {
+  final ZhihuTopItem item;
+  final VoidCallback onTap;
+
+  _PageItemView({this.item, this.onTap});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _PageItemState();
+  }
+}
+
+class _PageItemState extends State<_PageItemView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(widget.item.image),
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0)
+                .copyWith(bottom: 24.0),
+            child: Text(
+              widget.item.title,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
+                shadows: <Shadow>[
+                  Shadow(
+                    offset: Offset(2.0, 2.0),
+                    blurRadius: 3.0,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                  Shadow(
+                    offset: Offset(2.0, 2.0),
+                    blurRadius: 8.0,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
