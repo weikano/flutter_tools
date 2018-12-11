@@ -13,6 +13,6 @@ Future<dynamic> get(String url) async {
     return json.decode(raw);
   } else {
     print('get request with statusCode # ${response.statusCode}');
-    return <String, dynamic>{};
+    throw Exception('HTTP status code is ${response.statusCode}');
   }
 }

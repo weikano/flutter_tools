@@ -193,6 +193,13 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
         fontSize: _titleSize,
         color: Colors.white,
         fontWeight: FontWeight.w600,
+        shadows: <Shadow>[
+          Shadow(
+            offset: Offset(2.0, 2.0),
+            blurRadius: 8.0,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
+        ],
       ),
     );
     Widget desc;
