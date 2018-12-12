@@ -3,6 +3,8 @@ import 'const.dart';
 import 'api.dart';
 import 'dart:ui';
 import 'package:flutter_tools/basic.dart';
+import 'comments.dart';
+import 'package:share/share.dart';
 
 class ZhihuStoryPage extends StatefulWidget {
   final ZhihuStoryBase item;
@@ -24,7 +26,7 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
   final double _imageSourceSize = 14;
   final double _questionTitleSize = 16;
   final double _authorSize = 16;
-  final double _bioSize = 14;
+  final double _bioSize = 15;
   final double _avatarSize = 24;
 
   final EdgeInsets _paddingParas =
@@ -56,6 +58,7 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
         context: context,
         child: Stack(
           children: <Widget>[
+//            _buildParasFix(),
             SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +68,9 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
             _extra == null
                 ? null
                 : _ExtraWidget(
+                    shareUrl: _content.shareUrl,
                     extra: _extra,
+                    storyId: _content.id,
                   ),
           ],
         ),
@@ -79,7 +84,6 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
     ];
     if (_content != null) {
       contents.add(_buildQuestionTitle());
-      contents.add(_buildAuthorInfo());
       contents.addAll(_buildParas());
       contents.add(SizedBox(
         height: 80,
@@ -114,47 +118,79 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
     }
   }
 
-  Widget _buildAuthorInfo() {
-    return Padding(
-      padding: const EdgeInsets.all(_padding).copyWith(bottom: _padding / 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Image.network(
-            _content.parsed.avatar,
-            width: _avatarSize,
-            height: _avatarSize,
-            fit: BoxFit.scaleDown,
-          ),
-          SizedBox(
-            width: 3,
-          ),
-          Text(
-            _content.parsed.author,
-            style: TextStyle(
-              fontSize: _authorSize,
-              color: Colors.black,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          SizedBox(
-            width: 3,
-          ),
-          Expanded(
-            child: Text(
-              _content.parsed.bio,
-              textAlign: TextAlign.start,
-              maxLines: 2,
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: _bioSize,
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  Widget _bottom = SizedBox(
+    height: 80,
+  );
+
+//  Widget _buildParasFix() {
+//    int count = _content.parsed.ps.length + 2;
+//    return ListView.builder(
+//      itemBuilder: (BuildContext _, int index) {
+//        if (index == 0) {
+//          return _buildBackground();
+//        } else if (index == count - 1) {
+//          return _bottom;
+//        } else {
+//          ZhihuStoryPara para = _content.parsed.ps[index - 1];
+//          Widget content;
+//          if (para.type == ZhihuParaType.text) {
+//            content = Text(
+//              para.content,
+//              style: TextStyle(color: Colors.black87, fontSize: _paraSize),
+//            );
+//          } else if (para.type == ZhihuParaType.pic) {
+//            content = Image.network(
+//              para.content,
+//              fit: BoxFit.fitWidth,
+//            );
+//          } else if (para.type == ZhihuParaType.author) {
+//            content = Row(
+//              mainAxisAlignment: MainAxisAlignment.start,
+//              children: <Widget>[
+//                Image.network(
+//                  _content.parsed.avatar,
+//                  width: _avatarSize,
+//                  height: _avatarSize,
+//                  fit: BoxFit.scaleDown,
+//                ),
+//                SizedBox(
+//                  width: 3,
+//                ),
+//                Text(
+//                  _content.parsed.author,
+//                  style: TextStyle(
+//                    fontSize: _authorSize,
+//                    color: Colors.black,
+//                    fontWeight: FontWeight.w500,
+//                  ),
+//                ),
+//                SizedBox(
+//                  width: 3,
+//                ),
+//                Expanded(
+//                  child: Text(
+//                    _content.parsed.bio,
+//                    textAlign: TextAlign.start,
+//                    maxLines: 1,
+//                    overflow: TextOverflow.ellipsis,
+//                    style: TextStyle(
+//                      color: Colors.grey,
+//                      fontSize: _bioSize,
+//                    ),
+//                  ),
+//                )
+//              ],
+//            );
+//          }
+//          return Padding(
+//            padding: _paddingParas,
+//            child: content,
+//          );
+//        }
+//      },
+//      itemCount: count,
+//    );
+//  }
 
   List<Widget> _buildParas() {
     return _content.parsed.ps.map((para) {
@@ -164,10 +200,48 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
           para.content,
           style: TextStyle(color: Colors.black87, fontSize: _paraSize),
         );
-      } else {
+      } else if (para.type == ZhihuParaType.pic) {
         content = Image.network(
           para.content,
           fit: BoxFit.fitWidth,
+        );
+      } else if (para.type == ZhihuParaType.author) {
+        content = Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Image.network(
+              _content.parsed.avatar,
+              width: _avatarSize,
+              height: _avatarSize,
+              fit: BoxFit.scaleDown,
+            ),
+            SizedBox(
+              width: 3,
+            ),
+            Text(
+              _content.parsed.author,
+              style: TextStyle(
+                fontSize: _authorSize,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(
+              width: 3,
+            ),
+            Expanded(
+              child: Text(
+                _content.parsed.bio,
+                textAlign: TextAlign.start,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: _bioSize,
+                ),
+              ),
+            )
+          ],
         );
       }
       return Padding(
@@ -268,8 +342,12 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
 }
 
 class _ExtraWidget extends StatelessWidget {
+  final storyId;
+  final String shareUrl;
   final ZhihuStoryExtra extra;
-  _ExtraWidget({this.extra});
+
+  _ExtraWidget({this.extra, this.storyId, this.shareUrl});
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -281,9 +359,30 @@ class _ExtraWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () {
+                if (shareUrl != null) {
+                  Share.share(shareUrl);
+                }
+              },
+            ),
             Stack(
               children: <Widget>[
-                IconButton(icon: Icon(Icons.message), onPressed: () {}),
+                IconButton(
+                    icon: Icon(Icons.message),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext _) {
+                          return ZhihuCommentsPage(
+                            long: extra.long,
+                            short: extra.short,
+                            storyId: storyId,
+                            count: extra.total,
+                          );
+                        }),
+                      );
+                    }),
                 Positioned(
                   top: 4,
                   right: 4,

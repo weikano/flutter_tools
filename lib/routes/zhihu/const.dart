@@ -1,8 +1,6 @@
 import 'package:flutter_tools/converter/json_converter.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 
 //启动界面图像
 const LAUNCH_IMAGE =
@@ -85,12 +83,14 @@ class ZhihuNews {
 enum ZhihuParaType {
   pic,
   text,
+  author,
 }
 
 ///知乎内容段落
 class ZhihuStoryPara {
   ZhihuParaType type;
   String content;
+
   ZhihuStoryPara.image(String url) {
     type = ZhihuParaType.pic;
     content = url;
@@ -100,6 +100,10 @@ class ZhihuStoryPara {
     type = ZhihuParaType.text;
     content = text;
   }
+
+  ZhihuStoryPara.author() {
+    type = ZhihuParaType.author;
+  }
 }
 
 ///由body解析后的知乎内容
@@ -107,22 +111,61 @@ class ZhihuStoryDetail {
   String questionTitle; //h2 class=question-title
   String avatar; //img class=avatar
   String author; //span class=author
-  String bio; //span class=bio
-  List<ZhihuStoryPara> ps; //div class=content中每个p为一个NewsContentP
+  String bio = ''; //span class=bio
+
+  List<ZhihuStoryPara> ps = <ZhihuStoryPara>[];
+
   ZhihuStoryDetail.fromDocument(Document document) {
+    List<ZhihuStoryPara> header = <ZhihuStoryPara>[];
+    List<ZhihuStoryPara> after = <ZhihuStoryPara>[];
     questionTitle = document.getElementsByClassName('question-title')[0].text;
     print(questionTitle);
     avatar = document.getElementsByClassName('avatar')[0].attributes['src'];
     print(avatar);
     author = document.getElementsByClassName('author')[0].text;
-
     print(author);
-
-    bio = document.getElementsByClassName('bio')[0].text;
+    var bioElements = document.getElementsByClassName('bio');
+    if (bioElements.isNotEmpty) {
+      bio = bioElements[0].text;
+    }
     print(bio);
+
+    //获取class=question节点
+    List<Element> questions = document.getElementsByClassName('question');
+    for (Element question in questions) {
+      if (question.getElementsByClassName('avatar').isNotEmpty) {
+        //添加至ps中
+        after.addAll(_paraItems(question));
+      } else {
+        //添加至header中
+        header.addAll(_headerItems(question));
+      }
+    }
+    //添加before
+    ps.addAll(header);
+    //添加作者信息
+    ps.add(ZhihuStoryPara.author());
+    //添加after
+    ps.addAll(after);
+  }
+
+  List<ZhihuStoryPara> _headerItems(Element document) {
     Element raw = document.getElementsByClassName('content')[0];
     var paras = raw.getElementsByTagName('p');
-    ps = paras.map((para) {
+    return paras.map((para) {
+      var images = para.getElementsByTagName('img');
+      if (images != null && images.isNotEmpty) {
+        return ZhihuStoryPara.image(images[0].attributes['src']);
+      } else {
+        return ZhihuStoryPara.text(para.text);
+      }
+    }).toList();
+  }
+
+  List<ZhihuStoryPara> _paraItems(Element document) {
+    Element raw = document.getElementsByClassName('content')[0];
+    var paras = raw.getElementsByTagName('p');
+    return paras.map((para) {
       var images = para.getElementsByClassName('content-image');
       if (images != null && images.isNotEmpty) {
         return ZhihuStoryPara.image(images[0].attributes['src']);
@@ -152,7 +195,8 @@ class ZhihuStory {
     imageSource = optJSON(json, 'image_source');
     image = optJSON(json, 'image');
     title = optJSON(json, 'title');
-    shareUrl = optJSON(json, 'shareUrl');
+    shareUrl = optJSON(json, 'share_url');
+    print('SHAREURL ${shareUrl}');
     List list = optJSON(json, 'js');
     js = list?.map((m) => m.toString())?.toList();
     list = optJSON(json, 'images');
@@ -173,10 +217,56 @@ class ZhihuStoryExtra {
   int short;
   int popularity;
   int total;
+
   ZhihuStoryExtra.fromJSON(Map<String, dynamic> json) {
     long = optJSON(json, 'long_comments');
     short = optJSON(json, 'short_comments');
     popularity = optJSON(json, 'popularity');
     total = optJSON(json, 'comments');
+  }
+}
+
+class ZhihuCommentReplyTo {
+  String author;
+  String content;
+  int status;
+  int id;
+  String errMsg;
+
+  ZhihuCommentReplyTo.fromJSON(Map<String, dynamic> json) {
+    author = optJSON(json, 'author');
+    content = optJSON(json, 'content');
+    status = optJSON(json, 'status');
+    id = optJSON(json, 'id');
+    errMsg = optJSON(json, 'err_msg');
+  }
+}
+
+enum ZhihuCommentType {
+  short,
+  long,
+}
+
+class ZhihuComment {
+  ZhihuCommentType type;
+  String author;
+  String content;
+  String avatar;
+  int id;
+  int likes;
+  DateTime time;
+  ZhihuCommentReplyTo replyTo;
+
+  ZhihuComment.fromJSON(Map<String, dynamic> json) {
+    author = optJSON(json, 'author');
+    content = optJSON(json, 'content');
+    avatar = optJSON(json, 'avatar');
+    id = optJSON(json, 'id');
+    likes = optJSON(json, 'likes');
+    time = DateTime.fromMillisecondsSinceEpoch(optJSON(json, 'time') * 1000);
+    var replyToRaw = optJSON(json, 'reply_to');
+    if (replyToRaw != null) {
+      replyTo = ZhihuCommentReplyTo.fromJSON(replyToRaw);
+    }
   }
 }

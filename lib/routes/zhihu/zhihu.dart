@@ -103,7 +103,13 @@ class _ZhihuState extends StateWithFuture<ZhihuPage> {
       onNotification: notification,
       child: RefreshIndicator(
         onRefresh: _loadData,
-        child: ListView.builder(
+        child: ListView.separated(
+          separatorBuilder: (BuildContext _, int index) {
+            return Divider(
+              height: index == 0 ? 0 : 4,
+              color: Colors.black,
+            );
+          },
           controller: _scroller,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
@@ -132,6 +138,9 @@ class _ZhihuState extends StateWithFuture<ZhihuPage> {
                             color: Colors.black,
                           ),
                         ),
+                      ),
+                      SizedBox(
+                        width: 2,
                       ),
                       AspectRatio(
                         aspectRatio: 16.0 / 9.0,

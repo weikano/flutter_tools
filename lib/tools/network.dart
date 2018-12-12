@@ -5,6 +5,7 @@ Future<dynamic> get(String url) async {
   var client = HttpClient();
   print('start get request for # $url');
   var request = await client.getUrl(Uri.parse(url));
+  request.followRedirects = true;
   var response = await request.close();
   print("receive response");
   if (response.statusCode == HttpStatus.ok) {
