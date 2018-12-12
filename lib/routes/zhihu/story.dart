@@ -60,10 +60,12 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
         child: Stack(
           children: <Widget>[
 //            _buildParasFix(),
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: _buildContent(),
+            Scrollbar(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _buildContent(),
+                ),
               ),
             ),
             _extra == null

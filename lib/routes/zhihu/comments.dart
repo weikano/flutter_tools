@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'api.dart';
 import 'const.dart';
 import 'package:flutter_tools/widgets/commons.dart';
-import 'package:intl/date_symbol_data_custom.dart';
 
 class ZhihuCommentsPage extends StatefulWidget {
   ///storyId
@@ -71,25 +70,28 @@ class _ZhihuCommentsState extends State<ZhihuCommentsPage> {
   }
 
   Widget _buildCommentsList(List<ZhihuComment> comments) {
-    return ListView.separated(
-        itemBuilder: (BuildContext context, int index) {
-          var item = comments[index];
-          bool showTypeSection = false;
-          if (index == 0 ||
-              (index > 0 && comments[index].type != comments[index - 1].type)) {
-            showTypeSection = true;
-          }
-          bool long = item.type == ZhihuCommentType.long;
-          if (long) {
-            return _buildLongCommentItem(item, showTypeSection);
-          } else {
-            return _buildShortCommentItem(item, showTypeSection);
-          }
-        },
-        separatorBuilder: (BuildContext _, int index) {
-          return _divider;
-        },
-        itemCount: comments.length);
+    return Scrollbar(
+      child: ListView.separated(
+          itemBuilder: (BuildContext context, int index) {
+            var item = comments[index];
+            bool showTypeSection = false;
+            if (index == 0 ||
+                (index > 0 &&
+                    comments[index].type != comments[index - 1].type)) {
+              showTypeSection = true;
+            }
+            bool long = item.type == ZhihuCommentType.long;
+            if (long) {
+              return _buildLongCommentItem(item, showTypeSection);
+            } else {
+              return _buildShortCommentItem(item, showTypeSection);
+            }
+          },
+          separatorBuilder: (BuildContext _, int index) {
+            return _divider;
+          },
+          itemCount: comments.length),
+    );
   }
 
   var _divider = Divider(
@@ -111,7 +113,6 @@ class _ZhihuCommentsState extends State<ZhihuCommentsPage> {
   double _avatarSize = 24;
 
   Widget _buildLongCommentItem(ZhihuComment item, bool showTypeSection) {
-    //todo 长评论
     return _buildShortCommentItem(item, showTypeSection);
   }
 
