@@ -238,7 +238,7 @@ class ZhihuCommentReplyTo {
     content = optJSON(json, 'content');
     status = optJSON(json, 'status');
     id = optJSON(json, 'id');
-    errMsg = optJSON(json, 'err_msg');
+    errMsg = optJSON(json, 'error_msg');
   }
 }
 

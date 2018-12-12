@@ -9,7 +9,8 @@ class GankDatePage extends StatefulWidget {
   }
 }
 
-class _GankDateState extends State<GankDatePage> {
+class _GankDateState extends State<GankDatePage>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -61,4 +62,7 @@ class _GankDateState extends State<GankDatePage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

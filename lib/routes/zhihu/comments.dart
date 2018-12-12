@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tools/basic.dart';
+import 'package:intl/intl.dart';
 import 'api.dart';
 import 'const.dart';
 import 'package:flutter_tools/widgets/commons.dart';
+import 'package:intl/date_symbol_data_custom.dart';
 
 class ZhihuCommentsPage extends StatefulWidget {
   ///storyId
@@ -164,7 +166,7 @@ class _ZhihuCommentsState extends State<ZhihuCommentsPage> {
               height: _padding.top,
             ),
             Text(
-              item.time.toString(),
+              DateFormat('yyyy-MM-dd HH:mm').format(item.time),
               style: TextStyle(
                 fontSize: _timeFontSize,
                 color: _timeColor,
@@ -256,12 +258,16 @@ class _ZhihuCommentsState extends State<ZhihuCommentsPage> {
       ));
     } else {
       return Container(
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.all(Radius.circular(6)),
+        ),
         padding: _padding,
         child: Center(
           child: Text(
             reply.errMsg,
             style: TextStyle(
-              color: Colors.red,
+              color: Colors.black,
             ),
           ),
         ),

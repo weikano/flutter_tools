@@ -7,7 +7,8 @@ class GankRandomPage extends StatefulWidget {
   }
 }
 
-class _GankRandomState extends State<GankRandomPage> {
+class _GankRandomState extends State<GankRandomPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,4 +18,7 @@ class _GankRandomState extends State<GankRandomPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

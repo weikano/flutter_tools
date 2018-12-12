@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:flutter_tools/basic.dart';
 import 'comments.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ZhihuStoryPage extends StatefulWidget {
   final ZhihuStoryBase item;
@@ -348,6 +349,14 @@ class _ExtraWidget extends StatelessWidget {
 
   _ExtraWidget({this.extra, this.storyId, this.shareUrl});
 
+  _launchUrl() async {
+    if (await canLaunch(shareUrl)) {
+      await launch(shareUrl);
+    } else {
+      print('cannot open web browser');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -360,6 +369,14 @@ class _ExtraWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             IconButton(
+              tooltip: '浏览器打开',
+              icon: Icon(Icons.open_in_browser),
+              onPressed: () {
+                _launchUrl();
+              },
+            ),
+            IconButton(
+              tooltip: '分享',
               icon: Icon(Icons.share),
               onPressed: () {
                 if (shareUrl != null) {
@@ -370,6 +387,7 @@ class _ExtraWidget extends StatelessWidget {
             Stack(
               children: <Widget>[
                 IconButton(
+                    tooltip: '查看回复',
                     icon: Icon(Icons.message),
                     onPressed: () {
                       Navigator.of(context).push(

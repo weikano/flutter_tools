@@ -27,6 +27,7 @@ dependencies:
   intl: 0.15.7
   html: 0.13.3+3
   share: 0.5.3
+  flare_flutter: 1.0.2
 
 dev_dependencies:
   flutter_test:

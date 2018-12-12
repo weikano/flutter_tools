@@ -10,7 +10,8 @@ class GankCategoryPage extends StatefulWidget {
   }
 }
 
-class _GankCategoryState extends State<GankCategoryPage> {
+class _GankCategoryState extends State<GankCategoryPage>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -86,4 +87,7 @@ class _GankCategoryState extends State<GankCategoryPage> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
