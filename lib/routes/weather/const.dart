@@ -241,3 +241,22 @@ class WeatherReport {
     }
   }
 }
+
+class WeatherStatus {
+  final String label;
+  final String icon;
+  WeatherStatus(this.label, this.icon);
+}
+
+Map<int, WeatherStatus> weatherStatus = _initWeatherStatus();
+Map<int, WeatherStatus> _initWeatherStatus() {
+  //todo not finished
+  return <int, WeatherStatus>{
+    100: WeatherStatus('晴', '100.png'),
+    101: WeatherStatus('多云', '101.png'),
+    102: WeatherStatus('少云', '102.png'),
+    103: WeatherStatus('晴间多云', '103.png'),
+    104: WeatherStatus('阴', '104.png'),
+    200: WeatherStatus('有风', '200.png'),
+  };
+}
