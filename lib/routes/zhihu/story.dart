@@ -70,11 +70,13 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
             ),
             _extra == null
                 ? null
-                : _ExtraWidget(
-                    shareUrl: _content.shareUrl,
-                    extra: _extra,
-                    storyId: _content.id,
-                  ),
+                : Positioned(
+                    bottom: 0,
+                    child: _ExtraWidget(
+                      shareUrl: _content.shareUrl,
+                      extra: _extra,
+                      storyId: _content.id,
+                    )),
           ],
         ),
       ),
@@ -120,80 +122,6 @@ class _ZhihuStoryState extends StateWithFuture<ZhihuStoryPage> {
       );
     }
   }
-
-  Widget _bottom = SizedBox(
-    height: 80,
-  );
-
-//  Widget _buildParasFix() {
-//    int count = _content.parsed.ps.length + 2;
-//    return ListView.builder(
-//      itemBuilder: (BuildContext _, int index) {
-//        if (index == 0) {
-//          return _buildBackground();
-//        } else if (index == count - 1) {
-//          return _bottom;
-//        } else {
-//          ZhihuStoryPara para = _content.parsed.ps[index - 1];
-//          Widget content;
-//          if (para.type == ZhihuParaType.text) {
-//            content = Text(
-//              para.content,
-//              style: TextStyle(color: Colors.black87, fontSize: _paraSize),
-//            );
-//          } else if (para.type == ZhihuParaType.pic) {
-//            content = Image.network(
-//              para.content,
-//              fit: BoxFit.fitWidth,
-//            );
-//          } else if (para.type == ZhihuParaType.author) {
-//            content = Row(
-//              mainAxisAlignment: MainAxisAlignment.start,
-//              children: <Widget>[
-//                Image.network(
-//                  _content.parsed.avatar,
-//                  width: _avatarSize,
-//                  height: _avatarSize,
-//                  fit: BoxFit.scaleDown,
-//                ),
-//                SizedBox(
-//                  width: 3,
-//                ),
-//                Text(
-//                  _content.parsed.author,
-//                  style: TextStyle(
-//                    fontSize: _authorSize,
-//                    color: Colors.black,
-//                    fontWeight: FontWeight.w500,
-//                  ),
-//                ),
-//                SizedBox(
-//                  width: 3,
-//                ),
-//                Expanded(
-//                  child: Text(
-//                    _content.parsed.bio,
-//                    textAlign: TextAlign.start,
-//                    maxLines: 1,
-//                    overflow: TextOverflow.ellipsis,
-//                    style: TextStyle(
-//                      color: Colors.grey,
-//                      fontSize: _bioSize,
-//                    ),
-//                  ),
-//                )
-//              ],
-//            );
-//          }
-//          return Padding(
-//            padding: _paddingParas,
-//            child: content,
-//          );
-//        }
-//      },
-//      itemCount: count,
-//    );
-//  }
 
   List<Widget> _buildParas() {
     return _content.parsed.ps.map((para) {
@@ -361,77 +289,147 @@ class _ExtraWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: 0,
-      right: 0,
-      bottom: 0,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            IconButton(
-              tooltip: '浏览器打开',
-              icon: Icon(Icons.open_in_browser),
-              onPressed: () {
-                _launchUrl();
-              },
-            ),
-            IconButton(
-              tooltip: '分享',
-              icon: Icon(Icons.share),
-              onPressed: () {
-                if (shareUrl != null) {
-                  Share.share(shareUrl);
-                }
-              },
-            ),
-            Stack(
-              children: <Widget>[
-                IconButton(
-                    tooltip: '查看回复',
-                    icon: Icon(Icons.message),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext _) {
-                          return ZhihuCommentsPage(
-                            long: extra.long,
-                            short: extra.short,
-                            storyId: storyId,
-                            count: extra.total,
-                          );
-                        }),
-                      );
-                    }),
-                Positioned(
-                  top: 4,
-                  right: 4,
-                  child: Text(
-                    extra.total.toString(),
-                    style: TextStyle(fontSize: 12),
-                  ),
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          IconButton(
+            tooltip: '浏览器打开',
+            icon: Icon(Icons.open_in_browser),
+            onPressed: () {
+              _launchUrl();
+            },
+          ),
+          IconButton(
+            tooltip: '分享',
+            icon: Icon(Icons.share),
+            onPressed: () {
+              if (shareUrl != null) {
+                Share.share(shareUrl);
+              }
+            },
+          ),
+          Stack(
+            children: <Widget>[
+              IconButton(
+                  tooltip: '查看回复',
+                  icon: Icon(Icons.message),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (BuildContext _) {
+                        return ZhihuCommentsPage(
+                          long: extra.long,
+                          short: extra.short,
+                          storyId: storyId,
+                          count: extra.total,
+                        );
+                      }),
+                    );
+                  }),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: Text(
+                  extra.total.toString(),
+                  style: TextStyle(fontSize: 12),
                 ),
-              ],
-            ),
-            SizedBox(
-              width: _padding,
-            ),
-            Stack(
-              children: <Widget>[
-                IconButton(icon: Icon(Icons.favorite), onPressed: () {}),
-                Positioned(
-                  top: 4,
-                  right: 4,
-                  child: Text(
-                    extra.popularity.toString(),
-                    style: TextStyle(fontSize: 12),
-                  ),
+              ),
+            ],
+          ),
+          SizedBox(
+            width: _padding,
+          ),
+          Stack(
+            children: <Widget>[
+              IconButton(icon: Icon(Icons.favorite), onPressed: () {}),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: Text(
+                  extra.popularity.toString(),
+                  style: TextStyle(fontSize: 12),
                 ),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
+
+//  @override
+//  Widget build(BuildContext context) {
+//    return Positioned(
+//      bottom: 0,
+//      child: Padding(
+//        padding: const EdgeInsets.all(12.0),
+//        child: Row(
+//          mainAxisSize: MainAxisSize.max,
+//          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//          children: <Widget>[
+//            IconButton(
+//              tooltip: '浏览器打开',
+//              icon: Icon(Icons.open_in_browser),
+//              onPressed: () {
+//                _launchUrl();
+//              },
+//            ),
+//            IconButton(
+//              tooltip: '分享',
+//              icon: Icon(Icons.share),
+//              onPressed: () {
+//                if (shareUrl != null) {
+//                  Share.share(shareUrl);
+//                }
+//              },
+//            ),
+//            Stack(
+//              children: <Widget>[
+//                IconButton(
+//                    tooltip: '查看回复',
+//                    icon: Icon(Icons.message),
+//                    onPressed: () {
+//                      Navigator.of(context).push(
+//                        MaterialPageRoute(builder: (BuildContext _) {
+//                          return ZhihuCommentsPage(
+//                            long: extra.long,
+//                            short: extra.short,
+//                            storyId: storyId,
+//                            count: extra.total,
+//                          );
+//                        }),
+//                      );
+//                    }),
+//                Positioned(
+//                  top: 4,
+//                  right: 4,
+//                  child: Text(
+//                    extra.total.toString(),
+//                    style: TextStyle(fontSize: 12),
+//                  ),
+//                ),
+//              ],
+//            ),
+//            SizedBox(
+//              width: _padding,
+//            ),
+//            Stack(
+//              children: <Widget>[
+//                IconButton(icon: Icon(Icons.favorite), onPressed: () {}),
+//                Positioned(
+//                  top: 4,
+//                  right: 4,
+//                  child: Text(
+//                    extra.popularity.toString(),
+//                    style: TextStyle(fontSize: 12),
+//                  ),
+//                ),
+//              ],
+//            )
+//          ],
+//        ),
+//      ),
+//    );
+//  }
 }

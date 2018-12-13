@@ -4,6 +4,7 @@ import 'dart:math';
 import 'const.dart';
 import 'api.dart';
 import 'story.dart';
+//import 'story_bak.dart';
 import 'package:flutter_tools/basic.dart';
 
 class ZhihuPage extends StatefulWidget {
@@ -106,7 +107,7 @@ class _ZhihuState extends StateWithFuture<ZhihuPage> {
         child: ListView.separated(
           separatorBuilder: (BuildContext _, int index) {
             return Divider(
-              height: index == 0 ? 0 : 4,
+              height: index > 1 ? 0 : 4,
               color: Colors.black,
             );
           },
