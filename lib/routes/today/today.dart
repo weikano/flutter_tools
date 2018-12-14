@@ -16,11 +16,13 @@ class EventsTodayPage extends StatefulWidget {
 }
 
 class _EventsTodayPageState extends StateWithFuture<EventsTodayPage> {
-  ApiResponse<List<EventBrief>> _briefs = ApiResponse.ofLoading();
+  ApiResponse<List<EventBrief>> _briefs;
   DateTime _now = DateTime.now();
 
   void _loadData() async {
-    _briefs = await today();
+    _briefs = ApiResponse.ofLoading();
+    setState(() {});
+    _briefs = await today(_now);
     setState(() {});
   }
 
@@ -36,6 +38,22 @@ class _EventsTodayPageState extends StateWithFuture<EventsTodayPage> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('${EventsTodayPage.title} - ${_now.month}月${_now.day}号'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.calendar_today),
+              onPressed: () {
+                showDatePicker(
+                        context: context,
+                        initialDate: _now,
+                        firstDate: DateTime.now().subtract(Duration(days: 365)),
+                        lastDate: DateTime.now().add(Duration(days: 365)))
+                    .then((DateTime selected) {
+                  _now = selected;
+                  _loadData();
+                });
+              },
+            )
+          ],
         ),
         body: _buildContent(),
       ),
