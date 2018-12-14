@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tools/routes/gankio/main.dart';
 import 'package:flutter_tools/routes/info/screen_info.dart';
 import 'package:flutter_tools/routes/info/device_info.dart';
+import 'package:flutter_tools/routes/poet/poet.dart';
 import 'package:flutter_tools/routes/weather/weather.dart';
 import 'package:flutter_tools/routes/zhihu/zhihu.dart';
 import 'package:flutter_tools/routes/gankio/gankio.dart';
@@ -75,6 +76,13 @@ RouteData _gankio = RouteData(
   builder: (BuildContext context) => GankMainPage(),
 );
 
+RouteData _poet = RouteData(
+  title: DailyPoetPage.title,
+  iconUrl: 'assets/icons/poetry.png',
+  routeName: DailyPoetPage.routeName,
+  builder: (BuildContext _) => DailyPoetPage(),
+);
+
 final List<RouteData> allRoutes = _buildAllRoutes();
 
 _buildAllRoutes() {
@@ -84,5 +92,6 @@ _buildAllRoutes() {
     _weather,
     _zhihu,
     _gankio,
+    _poet,
   ];
 }
