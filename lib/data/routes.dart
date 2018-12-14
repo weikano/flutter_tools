@@ -8,6 +8,7 @@ import 'package:flutter_tools/routes/poet/poet.dart';
 import 'package:flutter_tools/routes/weather/weather.dart';
 import 'package:flutter_tools/routes/zhihu/zhihu.dart';
 import 'package:flutter_tools/routes/gankio/gankio.dart';
+import 'package:flutter_tools/routes/today/today.dart';
 
 class RouteData {
   const RouteData(
@@ -83,6 +84,13 @@ RouteData _poet = RouteData(
   builder: (BuildContext _) => DailyPoetPage(),
 );
 
+RouteData _today = RouteData(
+  title: EventsTodayPage.title,
+  routeName: EventsTodayPage.routeName,
+  iconUrl: 'assets/icons/today.png',
+  builder: (BuildContext _) => EventsTodayPage(),
+);
+
 final List<RouteData> allRoutes = _buildAllRoutes();
 
 _buildAllRoutes() {
@@ -93,5 +101,6 @@ _buildAllRoutes() {
     _zhihu,
     _gankio,
     _poet,
+    _today,
   ];
 }

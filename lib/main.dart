@@ -71,10 +71,13 @@ class _RouteItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Image.asset(
-            data.iconUrl,
-            width: 60.0,
-            height: 60.0,
+          ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(80)),
+            child: Image.asset(
+              data.iconUrl,
+              width: 60.0,
+              height: 60.0,
+            ),
           ),
           const SizedBox(
             height: 4.0,

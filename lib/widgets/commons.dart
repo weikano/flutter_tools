@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ReloadButton extends StatelessWidget {
   final VoidCallback _onPressed;
+
   @override
   Widget build(BuildContext context) {
     return RaisedButton.icon(
@@ -14,4 +15,13 @@ class ReloadButton extends StatelessWidget {
   }
 
   ReloadButton({VoidCallback onPressed}) : _onPressed = onPressed;
+}
+
+class LoadingIndicator extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
 }
