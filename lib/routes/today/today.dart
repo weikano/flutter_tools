@@ -6,7 +6,7 @@ import 'const.dart';
 import 'api.dart';
 
 class EventsTodayPage extends StatefulWidget {
-  static var routeName = '/weather';
+  static var routeName = '/today';
   static var title = '历史上的今天';
 
   @override

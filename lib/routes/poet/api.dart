@@ -15,7 +15,8 @@ Future<ApiResponse<Poetry>> poetry() async {
         await sp.setString(TOKEN_KEY, token);
       }
     }
-    Map<String, dynamic> json = await post(ONE, {'X-User-Token': token});
+//    Map<String, dynamic> json = await post(ONE, {'X-User-Token': token});
+    Map<String, dynamic> json = await post(ONE);
     if (_validResponse(json)) {
       return ApiResponse.ofSuccess(Poetry.fromJSON(optJSON(json, 'data')));
     } else {

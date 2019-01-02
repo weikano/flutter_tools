@@ -28,6 +28,7 @@ dependencies:
   html: 0.13.3+3
   share: 0.5.3
   flare_flutter: 1.0.2
+  sticky_headers: ^0.1.7
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +49,7 @@ flutter:
     - assets/
     - assets/icons/
     - assets/weather/
+    - assets/database/
   fonts:
     - family: poet
       fonts:
