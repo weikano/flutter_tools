@@ -29,6 +29,7 @@ dependencies:
   share: 0.5.3
   flare_flutter: 1.0.2
   sticky_headers: ^0.1.7
+  flutter_sticky_header: ^0.3.4
 
 dev_dependencies:
   flutter_test:

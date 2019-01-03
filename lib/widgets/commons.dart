@@ -6,13 +6,15 @@ class ReloadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton.icon(
-        onPressed: _onPressed,
-        icon: Icon(
-          Icons.close,
-          color: Colors.red,
-        ),
-        label: Text('RELOAD'));
+    return Center(
+      child: RaisedButton.icon(
+          onPressed: _onPressed,
+          icon: Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+          label: Text('RELOAD')),
+    );
   }
 
   ReloadButton({VoidCallback onPressed}) : _onPressed = onPressed;
@@ -27,11 +29,13 @@ class LoadingIndicator extends StatelessWidget {
   }
 }
 
+///简单的ListView
 class NormalListPage<T> extends StatefulWidget {
   final Future<ApiResponse<List<T>>> future;
   final ItemWidgetBuilder builder;
+  bool dividerWithPadding;
 
-  NormalListPage(this.builder, this.future);
+  NormalListPage(this.builder, this.future, {this.dividerWithPadding = false});
 
   @override
   State<StatefulWidget> createState() {
@@ -67,7 +71,11 @@ class _NormalListPageState<T> extends State<NormalListPage<T>>
                           : d.response[index - 1]);
                 },
                 separatorBuilder: (_, index) {
-                  return _divider;
+                  if (widget.dividerWithPadding) {
+                    return _dividerWithPadding;
+                  } else {
+                    return _divider;
+                  }
                 },
                 itemCount: d.response.length);
           }
@@ -83,11 +91,69 @@ class _NormalListPageState<T> extends State<NormalListPage<T>>
   bool get wantKeepAlive => true;
 }
 
-var _divider = SizedBox(
+var _divider = Divider(
   height: 1,
-  child: Container(
-    color: Colors.grey,
-  ),
+  color: Colors.grey,
+);
+
+var _dividerWithPadding = Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 12),
+  child: _divider,
 );
 
 var padding = const EdgeInsets.all(12);
+
+///简单的GridView
+class NormalGridPage<T> extends StatefulWidget {
+  final Future<ApiResponse<List<T>>> future;
+  final ItemWidgetBuilder builder;
+  final SliverGridDelegate gridDelegate;
+
+  NormalGridPage({this.future, this.builder, this.gridDelegate});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _NormalGridPageState();
+  }
+}
+
+class _NormalGridPageState<T> extends State<NormalGridPage<T>>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: widget.future,
+      initialData: ApiResponse<List<T>>.ofLoading(),
+      builder: (_, AsyncSnapshot<ApiResponse<List<T>>> data) {
+        if (data.hasError) {
+          return Center(
+            child: ReloadButton(),
+          );
+        } else if (data.hasData) {
+          var d = data.data;
+          if (d.fail()) {
+            return Center(
+              child: ReloadButton(),
+            );
+          } else if (d.success()) {
+            return GridView.builder(
+              gridDelegate: widget.gridDelegate,
+              itemBuilder: (_, index) {
+                return widget.builder(
+                    _,
+                    d.response[index],
+                    d.response.isEmpty || index == 0
+                        ? null
+                        : d.response[index - 1]);
+              },
+              itemCount: d.response.length,
+            );
+          }
+        }
+      },
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}

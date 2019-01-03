@@ -49,7 +49,7 @@ class DbHelper {
     List<
         Map<String,
             dynamic>> authors = await (await _getDatabase(true)).rawQuery(
-        'SELECT id, name, intro, dynasty, baidu_wiki FROM authors ORDER BY dynasty, name');
+        'select A.* from authors a, dynasties b on a.dynasty = b.name order by b.start_year, a.id');
     return ApiResponse.ofSuccess(
         authors.map((it) => Author.fromDatabase(it)).toList());
   }
@@ -69,6 +69,39 @@ class DbHelper {
         "SELECT * FROM collections ORDER BY kind_id, show_order, name");
     return ApiResponse.ofSuccess(
         collections.map((m) => Collection.fromDatabase(m)).toList());
+  }
+
+  ///作品集按主题排序
+  Future<ApiResponse<Map<PoetTheme, List<Collection>>>>
+      allCollectionsGroupByTheme() async {
+    var cs = (await allCollections()).response;
+    Map<PoetTheme, List<Collection>> result = <PoetTheme, List<Collection>>{};
+    cs.forEach((c) {
+      PoetTheme key = PoetTheme.simple(c.kind_id, c.kind);
+      var ds = result[key];
+      if (ds == null) {
+        ds = <Collection>[];
+      }
+      ds.add(c);
+      result[key] = ds;
+    });
+    return ApiResponse.ofSuccess(result);
+  }
+
+  ///按朝代前后列出所有作者
+  Future<ApiResponse<Map<Dynasty, List<Author>>>> allAuthorsByDynasty() async {
+    var as = (await allAuthors()).response;
+    Map<Dynasty, List<Author>> result = <Dynasty, List<Author>>{};
+    as.forEach((a) {
+      Dynasty key = Dynasty.simple(a.dynasty);
+      var ds = result[key];
+      if (ds == null) {
+        ds = <Author>[];
+      }
+      ds.add(a);
+      result[key] = ds;
+    });
+    return ApiResponse.ofSuccess(result);
   }
 
   ///所有主题
@@ -121,7 +154,7 @@ class DbHelper {
   }
 
   ///分类名下所有作品
-  Future<ApiResponse<List<CollectionItem>>> allCollectionItemsById(
+  Future<ApiResponse<List<CollectionWork>>> allCollectionItemsById(
       Collection collection) async {
     List<
         Map<String,
@@ -129,7 +162,7 @@ class DbHelper {
         "SELECT * FROM collection_works WHERE collection_id=? ORDER BY show_order",
         [collection.id]);
     return ApiResponse.ofSuccess(
-        items.map((it) => CollectionItem.fromDatabase(it)).toList());
+        items.map((it) => CollectionWork.fromDatabase(it)).toList());
   }
 
   ///作品详情
@@ -141,5 +174,15 @@ class DbHelper {
     } else {
       return ApiResponse.ofError(Exception(['找不到对应的作品']));
     }
+  }
+
+  ///查询作者名下的某个kind的作品
+  Future<ApiResponse<List<Work>>> worksByAuthorAndKind(
+      Author author, String kind) async {
+    List<Map<String, dynamic>> work = await (await _getDatabase(true)).rawQuery(
+        "SELECT * FROM works WHERE author_id = ? AND kind = ? ORDER BY id",
+        [author.id, kind]);
+    return ApiResponse.ofSuccess(
+        work.map((item) => Work.fromDatabase(item)).toList());
   }
 }

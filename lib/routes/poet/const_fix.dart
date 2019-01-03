@@ -31,11 +31,11 @@ class Author {
         updatedAt = optJSON(item, "updated_at"),
         wiki = optJSON(item, "baidu_wiki"),
         countOfWorks = optJSON(item, "works_count"),
-        countOfShi = optJSON(item, "shi_count"),
-        countOfCi = optJSON(item, "ci_count"),
-        countOfWen = optJSON(item, "wen_count"),
-        countOfQu = optJSON(item, "qu_count"),
-        countOfFu = optJSON(item, "fu_count");
+        countOfShi = optJSON(item, "works_shi_count"),
+        countOfCi = optJSON(item, "works_ci_count"),
+        countOfWen = optJSON(item, "works_wen_count"),
+        countOfQu = optJSON(item, "works_qu_count"),
+        countOfFu = optJSON(item, "works_fu_count");
 }
 
 ///c朝代
@@ -56,6 +56,24 @@ class Dynasty {
         endYear = optJSON(item, "end_year"),
         nameTr = optJSON(item, "name_tr"),
         introTr = optJSON(item, "intro_tr");
+  Dynasty.simple(String name)
+      : id = -1,
+        name = name,
+        intro = '',
+        startYear = '',
+        endYear = '',
+        nameTr = '',
+        introTr = '';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Dynasty &&
+          runtimeType == other.runtimeType &&
+          name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
 
 class PoetTheme {
@@ -69,6 +87,20 @@ class PoetTheme {
         show_order = optJSON(item, "show_order"),
         name = optJSON(item, "name"),
         name_tr = optJSON(item, "name_tr");
+
+  PoetTheme.simple(int id, String name)
+      : id = id,
+        name = name,
+        show_order = 0,
+        name_tr = "";
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PoetTheme && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 ///作品
@@ -113,6 +145,7 @@ class Work {
         appreciation = optJSON(item, "appreciation"),
         master_comment = optJSON(item, "master_comment"),
         layout = optJSON(item, "layout");
+
   bool center() {
     return layout == 'center';
   }
@@ -151,7 +184,7 @@ class Collection {
         kind_tr = optJSON(item, "kind_tr");
 }
 
-///点击作品集后显示的列表内容item
+///点击作品集后显示的摘录
 class CollectionQuote {
   final int quote_id;
   final String quote;
@@ -165,7 +198,7 @@ class CollectionQuote {
         quote_author = optJSON(item, 'quote_author');
 }
 
-class CollectionItem {
+class CollectionWork {
   final int id;
   final int show_order;
   final int work_id;
@@ -174,7 +207,7 @@ class CollectionItem {
   final String work_dynasty;
   final String work_content;
 
-  CollectionItem.fromDatabase(Map<String, dynamic> item)
+  CollectionWork.fromDatabase(Map<String, dynamic> item)
       : id = optJSON(item, "id"),
         show_order = optJSON(item, "show_order"),
         work_id = optJSON(item, "work_id"),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tools/routes/poet/author_tab.dart';
 import 'package:flutter_tools/routes/poet/const_fix.dart';
 import 'package:flutter_tools/routes/poet/db_helper.dart';
+import 'package:flutter_tools/routes/poet/collection_tab.dart';
 import 'package:flutter_tools/routes/poet/poet_category.dart';
 import 'package:flutter_tools/routes/poet/styles.dart';
 import 'package:flutter_tools/widgets/commons.dart';
@@ -11,10 +13,10 @@ class PoetCategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultTabController(
-        length: 4,
+        length: 3,
         child: Scaffold(
           appBar: TabBar(
-            tabs: ['作品集', '主题', '作者', '朝代']
+            tabs: ['作品集', '作者', '作品']
                 .map((m) => Tab(
                       child: Text(
                         m,
@@ -25,9 +27,11 @@ class PoetCategoryPage extends StatelessWidget {
             isScrollable: true,
           ),
           body: TabBarView(children: [
-            _CollectionsPage(),
-            _ThemesPage(),
-            _AuthorsPage(),
+            CollectionTab(),
+            AuthorTab(),
+//            _CollectionsPage(),
+//            _ThemesPage(),
+//            _AuthorsPage(),
             _DynastiesPage(),
           ]),
         ),
@@ -57,7 +61,7 @@ class _CollectionsPage extends NormalListPage<Collection> {
                   child: SizedBox(
                     width: double.infinity,
                     child: Text(
-                      data.kind,
+                      data.kindId,
                       style: sectionTextStyle,
                     ),
                   ),

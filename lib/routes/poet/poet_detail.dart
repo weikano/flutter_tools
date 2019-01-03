@@ -3,6 +3,7 @@ import 'package:flutter_tools/basic.dart';
 import 'package:flutter_tools/routes/poet/const_fix.dart';
 import 'package:flutter_tools/routes/poet/db_helper.dart';
 import 'package:flutter_tools/routes/poet/styles.dart';
+import 'package:flutter_tools/utils.dart';
 import 'package:flutter_tools/widgets/commons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -177,7 +178,9 @@ class _WorkContent extends StatelessWidget {
     if (work.wiki != null) {
       actions.add(_TextOptionsMenu(
         data: '网',
-        onTap: _baidu,
+        onTap: () {
+          openWebView(work.wiki);
+        },
         message: "百度链接",
       ));
     }
@@ -220,9 +223,9 @@ class _WorkContent extends StatelessWidget {
 
   void _appreciation() {}
 
-  void _baidu() async {
-    if (await canLaunch(work.wiki)) {
-      await launch(work.wiki);
-    }
-  }
+//  void _baidu() async {
+//    if (await canLaunch(work.wiki)) {
+//      await launch(work.wiki);
+//    }
+//  }
 }
