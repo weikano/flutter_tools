@@ -3,6 +3,7 @@ import 'package:flutter_tools/routes/poet/author_works_by_kind.dart';
 import 'package:flutter_tools/routes/poet/const_fix.dart';
 import 'package:flutter_tools/utils.dart';
 
+///作者详情
 class AuthorDetailPage extends StatelessWidget {
   final Author author;
 

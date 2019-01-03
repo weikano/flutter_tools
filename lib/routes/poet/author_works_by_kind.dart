@@ -4,6 +4,7 @@ import 'package:flutter_tools/routes/poet/db_helper.dart';
 import 'package:flutter_tools/routes/poet/styles.dart';
 import 'package:flutter_tools/widgets/commons.dart';
 
+///作者作品集
 class AuthorWorksByKind extends StatelessWidget {
   final _tabs = ['诗', '词', '曲', '赋', '文'];
   final _ids = ['shi', 'ci', 'qu', 'fu', 'wen'];

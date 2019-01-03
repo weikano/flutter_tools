@@ -4,6 +4,7 @@ import 'package:flutter_tools/routes/poet/db_helper.dart';
 import 'package:flutter_tools/routes/poet/styles.dart';
 import 'package:flutter_tools/widgets/commons.dart';
 
+///作品集中单项中收录的诗和摘录列表
 class CollectionDetailPage extends StatelessWidget {
   final Collection item;
 
