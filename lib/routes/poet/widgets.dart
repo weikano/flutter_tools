@@ -4,7 +4,7 @@ import 'package:flutter_tools/routes/poet/const_fix.dart';
 
 ///作品集item
 class CollectionItemWidget extends StatelessWidget {
-  final double _size = 60;
+  final double _size = 48;
   final Collection item;
   CollectionItemWidget(this.item);
   @override
@@ -48,6 +48,7 @@ class CollectionItemWidget extends StatelessWidget {
               fontSize: 13,
             ),
             maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           )
         ],
       ),

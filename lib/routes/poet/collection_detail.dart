@@ -172,7 +172,7 @@ class _Works extends NormalListPage<CollectionWork> {
               ),
             ),
           );
-        }, DbHelper().allCollectionItemsById(collection),
+        }, PoetDbHelper().allCollectionItemsById(collection),
             dividerWithPadding: true);
 }
 
@@ -203,6 +203,6 @@ class _Quotes extends NormalListPage<CollectionQuote> {
               ),
             ),
           );
-        }, DbHelper().allQuotesByCollection(collection),
+        }, PoetDbHelper().allQuotesByCollection(collection),
             dividerWithPadding: true);
 }

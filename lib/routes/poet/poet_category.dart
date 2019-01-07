@@ -84,5 +84,5 @@ class _CollectionQuotesPage extends NormalListPage<CollectionQuote> {
               ),
             ),
           );
-        }, DbHelper().allQuotesByCollection(data));
+        }, PoetDbHelper().allQuotesByCollection(data));
 }

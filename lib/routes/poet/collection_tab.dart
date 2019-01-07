@@ -42,7 +42,7 @@ class _CollectionTabState extends State<CollectionTab>
         }
         return LoadingIndicator();
       },
-      future: DbHelper().allCollectionsGroupByTheme(),
+      future: PoetDbHelper().allCollectionsGroupByTheme(),
       initialData: ApiResponse<Map<PoetTheme, List<Collection>>>.ofLoading(),
     );
   }

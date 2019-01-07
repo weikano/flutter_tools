@@ -46,7 +46,7 @@ class _ThemesPage extends NormalListPage<PoetTheme> {
   _ThemesPage()
       : super((_, data, prev) {
           return _Item(data.name);
-        }, DbHelper().allThemes());
+        }, PoetDbHelper().allThemes());
 }
 
 class _CollectionsPage extends NormalListPage<Collection> {
@@ -82,7 +82,7 @@ class _CollectionsPage extends NormalListPage<Collection> {
               },
             );
           }
-        }, DbHelper().allCollections());
+        }, PoetDbHelper().allCollections());
 
   static _jumpToCollectionQuotesPage(BuildContext context, Collection data) {
     Navigator.push(
@@ -94,14 +94,14 @@ class _DynastiesPage extends NormalListPage<Dynasty> {
   _DynastiesPage()
       : super((_, data, prev) {
           return _Item(data.name);
-        }, DbHelper().allDynasties());
+        }, PoetDbHelper().allDynasties());
 }
 
 class _AuthorsPage extends NormalListPage<Author> {
   _AuthorsPage()
       : super((_, data, prev) {
           return _Item(data.name);
-        }, DbHelper().allAuthors());
+        }, PoetDbHelper().allAuthors());
 }
 
 class _Item extends StatelessWidget {

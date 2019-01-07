@@ -58,7 +58,7 @@ class _Body extends NormalListPage<Work> {
   _Body(this.author, this.kindId)
       : super((_, data, prev) {
           String content = data.content;
-          content = content.substring(0, content.indexOf("。"));
+          content = content.substring(0, content.indexOf("。") + 1);
           return InkWell(
             onTap: () {
               //todo 跳转到作品详情
@@ -79,11 +79,13 @@ class _Body extends NormalListPage<Work> {
                   Text(
                     content,
                     style: _styleContent,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
           );
-        }, DbHelper().worksByAuthorAndKind(author, kindId),
+        }, PoetDbHelper().worksByAuthorAndKind(author, kindId),
             dividerWithPadding: true);
 }

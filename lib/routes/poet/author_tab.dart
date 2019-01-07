@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_tools/basic.dart';
@@ -33,7 +35,7 @@ class _State extends State<AuthorTab> with AutomaticKeepAliveClientMixin {
           }
           return LoadingIndicator();
         },
-        future: DbHelper().allAuthorsByDynasty(),
+        future: PoetDbHelper().allAuthorsByDynasty(),
         initialData: ApiResponse<Map<Dynasty, List<Author>>>.ofLoading());
   }
 
@@ -51,25 +53,45 @@ class _State extends State<AuthorTab> with AutomaticKeepAliveClientMixin {
     List<Widget> widges = <Widget>[];
     data.forEach((Dynasty key, List<Author> authors) {
       var item = SliverStickyHeader(
-        header: _buildHeader(key),
+        header: _buildHeader(key, authors),
         sliver: SliverList(
             delegate: SliverChildBuilderDelegate((_, int index) {
           return _AuthorItemWidget(authors[index]);
-        }, childCount: authors.length)),
+        }, childCount: min(authors.length, 10))),
       );
       widges.add(item);
     });
     return widges;
   }
 
-  Widget _buildHeader(Dynasty key) {
+  Widget _buildHeader(Dynasty key, List<Author> authors) {
+    Widget body;
+    bool hasMore = authors.length > 10;
+    var sectionLabel = Text(key.name,
+        style: baseTextStyle.copyWith(
+            fontSize: 16,
+            color: Colors.deepOrange,
+            fontWeight: FontWeight.w700));
+    if (hasMore) {
+      body = Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(child: sectionLabel),
+          SizedBox(
+            width: 8,
+          ),
+          Text(
+            '更多',
+            style: TextStyle(color: Colors.grey),
+          )
+        ],
+      );
+    } else {
+      body = sectionLabel;
+    }
     return Container(
       decoration: BoxDecoration(color: headerBackgroundColor),
-      child: Text(key.name,
-          style: baseTextStyle.copyWith(
-              fontSize: 16,
-              color: Colors.deepOrange,
-              fontWeight: FontWeight.w700)),
+      child: body,
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
     );
   }

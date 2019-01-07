@@ -31,7 +31,7 @@ class _Body extends NormalGridPage<Collection> {
 
   _Body(this.theme)
       : super(
-            future: DbHelper().allCollectionsByKind(theme),
+            future: PoetDbHelper().allCollectionsByKind(theme),
             builder: (BuildContext ctx, data, prev) {
               return CollectionItemWidget(data);
             },

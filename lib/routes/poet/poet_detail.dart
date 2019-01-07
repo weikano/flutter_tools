@@ -85,7 +85,7 @@ class _WorkFromCollectionQuotePageState
           ),
         );
       },
-      future: DbHelper().workDetailByQuoteId(widget.quote),
+      future: PoetDbHelper().workDetailByQuoteId(widget.quote),
       initialData: ApiResponse<Work>.ofLoading(),
     );
   }
