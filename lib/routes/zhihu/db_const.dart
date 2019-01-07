@@ -1,0 +1,50 @@
+const _TABLE_TOP_ITEM = 'zhihu_top_story';
+
+const _CREATE_TABLE_ZHIHU_TOP_ITEM = '''
+CREATE TABLE IF NOT EXISTS $_TABLE_TOP_ITEM (
+  id INTEGER NOT NULL,
+  type INTEGER,
+  image TEXT,
+  title TEXT,
+  PRIMARY KEY(id)
+) WITHOUT ROWID;
+''';
+const _TABLE_LIST_ITEM = 'zhihu_list_story';
+const _CREATE_TABLE_ZHIHU_LIST_ITEM = '''
+CREATE TABLE IF NOT EXISTS $_TABLE_LIST_ITEM (
+  id INTEGER NOT NULL,
+  images TEXT,
+  title TEXT,
+  type INTEGER,
+  date VARCHAR(6),
+  PRIMARY KEY(id)
+) WITHOUT ROWID;
+''';
+
+const _CREATE_INDEX_LIST_ITEM_DATE = '''
+CREATE INDEX ix_${_TABLE_LIST_ITEM}_date ON $_TABLE_LIST_ITEM (date);
+''';
+
+const _TABLE_ITEM_DETAIL = 'zhuhu_story_detail';
+const _CREATE_TABLE_ZHIHU_STORY_DETAIL = '''
+CREATE TABLE IF NOT EXISTS $_TABLE_ITEM_DETAIL (
+  body TEXT,
+  image_source TEXT,
+  title TEXT,
+  image TEXT,
+  share_url TEXT,
+  js TEXT,
+  images TEXT,
+  type INTEGER,
+  id INTEGER NOT NULL,
+  css TEXT,
+  PRIMARY KEY(id)
+) WITHOUT ROWID;
+''';
+
+const ZHIHU_TABLE = <String>[
+  _CREATE_TABLE_ZHIHU_LIST_ITEM,
+  _CREATE_TABLE_ZHIHU_STORY_DETAIL,
+  _CREATE_TABLE_ZHIHU_TOP_ITEM
+];
+const ZHIHU_INDEX = <String>[_CREATE_INDEX_LIST_ITEM_DATE];
