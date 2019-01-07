@@ -39,50 +39,51 @@ var _contentStyle = baseTextStyle.copyWith(fontSize: 16, color: Colors.grey);
 
 class _CollectionQuotesPage extends NormalListPage<CollectionQuote> {
   final Collection data;
+
   static _jumpToWorkDetail(BuildContext context, CollectionQuote data) {
     Navigator.push(context,
         MaterialPageRoute(builder: (_) => WorkFromCollectionQuotePage(data)));
   }
 
   _CollectionQuotesPage(this.data)
-      : super((_, data, prev) {
-          return InkWell(
-            onTap: () {
-              _jumpToWorkDetail(_, data);
-            },
-            child: Padding(
-              padding: padding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          data.quote_work,
-                          style: _titleStyle,
+      : super(
+            (_, data, prev) {
+              return Padding(
+                padding: padding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            data.quote_work,
+                            style: _titleStyle,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Text(
-                        data.quote_author,
-                        style: _authorStyle,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    data.quote,
-                    style: _contentStyle,
-                  ),
-                ],
-              ),
-            ),
-          );
-        }, PoetDbHelper().allQuotesByCollection(data));
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Text(
+                          data.quote_author,
+                          style: _authorStyle,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      data.quote,
+                      style: _contentStyle,
+                    ),
+                  ],
+                ),
+              );
+            },
+            PoetDbHelper().allQuotesByCollection(data),
+            onItemClick: (BuildContext _, dynamic data) {
+              _jumpToWorkDetail(_, data);
+            });
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tools/routes/poet/const_fix.dart';
 import 'package:flutter_tools/routes/poet/db_helper.dart';
+import 'package:flutter_tools/routes/poet/poet_detail.dart';
 import 'package:flutter_tools/routes/poet/styles.dart';
 import 'package:flutter_tools/widgets/commons.dart';
 
@@ -183,7 +184,9 @@ class _Quotes extends NormalListPage<CollectionQuote> {
           return InkWell(
             onTap: () {
               //todo 跳转至摘录详情
-              print(data);
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return WorkFromCollectionQuotePage(data);
+              }));
             },
             child: Padding(
               padding: padding,

@@ -56,14 +56,11 @@ class _Body extends NormalListPage<Work> {
   final Author author;
   final String kindId;
   _Body(this.author, this.kindId)
-      : super((_, data, prev) {
-          String content = data.content;
-          content = content.substring(0, content.indexOf("。") + 1);
-          return InkWell(
-            onTap: () {
-              //todo 跳转到作品详情
-            },
-            child: Padding(
+      : super(
+          (_, data, prev) {
+            String content = data.content;
+            content = content.substring(0, content.indexOf("。") + 1);
+            return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,8 +81,9 @@ class _Body extends NormalListPage<Work> {
                   ),
                 ],
               ),
-            ),
-          );
-        }, PoetDbHelper().worksByAuthorAndKind(author, kindId),
-            dividerWithPadding: true);
+            );
+          },
+          PoetDbHelper().worksByAuthorAndKind(author, kindId),
+          dividerWithPadding: true,
+        );
 }

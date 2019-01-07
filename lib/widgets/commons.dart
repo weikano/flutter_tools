@@ -57,6 +57,7 @@ class EmptyWidget extends StatelessWidget {
   }
 }
 
+typedef OnItemClickListener = Function(BuildContext context, dynamic data);
 typedef ItemWidgetBuilder = Widget Function(
     BuildContext context, dynamic data, dynamic prev);
 
@@ -107,9 +108,11 @@ class _NormalListMoreItem extends StatelessWidget {
 class NormalListPage<T> extends StatefulWidget {
   final Future<ApiResponse<List<T>>> future;
   final ItemWidgetBuilder builder;
+  final OnItemClickListener onItemClick;
   bool dividerWithPadding;
 
-  NormalListPage(this.builder, this.future, {this.dividerWithPadding = false});
+  NormalListPage(this.builder, this.future,
+      {this.dividerWithPadding = false, this.onItemClick});
 
   @override
   State<StatefulWidget> createState() {
@@ -120,7 +123,7 @@ class NormalListPage<T> extends StatefulWidget {
 class _NormalListPageState<T> extends State<NormalListPage<T>>
     with AutomaticKeepAliveClientMixin {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _context) {
     var controller = ScrollController();
     return FutureBuilder(
       builder: (_, AsyncSnapshot<ApiResponse<List<T>>> data) {
@@ -144,12 +147,19 @@ class _NormalListPageState<T> extends State<NormalListPage<T>>
                     if (index == d.response.length) {
                       return _NormalListNoMoreItem();
                     }
-                    return widget.builder(
-                        _,
-                        d.response[index],
-                        d.response.isEmpty || index == 0
-                            ? null
-                            : d.response[index - 1]);
+                    return InkWell(
+                      onTap: () {
+                        if (widget.onItemClick != null) {
+                          widget.onItemClick(context, data);
+                        }
+                      },
+                      child: widget.builder(
+                          _,
+                          d.response[index],
+                          d.response.isEmpty || index == 0
+                              ? null
+                              : d.response[index - 1]),
+                    );
                   },
                   separatorBuilder: (_, index) {
                     if (widget.dividerWithPadding) {
