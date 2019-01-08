@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tools/routes/poet/const_fix.dart';
 import 'package:flutter_tools/routes/poet/db_helper.dart';
-import 'package:flutter_tools/routes/poet/poet_detail.dart';
 import 'package:flutter_tools/routes/poet/styles.dart';
 import 'package:flutter_tools/widgets/commons.dart';
 
@@ -41,8 +40,8 @@ class _CollectionQuotesPage extends NormalListPage<CollectionQuote> {
   final Collection data;
 
   static _jumpToWorkDetail(BuildContext context, CollectionQuote data) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (_) => WorkFromCollectionQuotePage(data)));
+//    Navigator.push(context,
+//        MaterialPageRoute(builder: (_) => WorkFromCollectionQuotePage(data)));
   }
 
   _CollectionQuotesPage(this.data)

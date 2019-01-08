@@ -17,23 +17,5 @@ class _PoetMainState extends State<PoetMainPage> {
     return MaterialApp(
       home: PoetCategoryPage(),
     );
-//    return MaterialApp(
-//      home: Scaffold(
-//        bottomNavigationBar: BottomNavigationBar(currentIndex: 0, items: [
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.home),
-//            title: Text('遇见'),
-//          ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.category),
-//            title: Text('分类'),
-//          ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.search),
-//            title: Text('搜索'),
-//          ),
-//        ]),
-//      ),
-//    );
   }
 }

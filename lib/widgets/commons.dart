@@ -2,6 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tools/basic.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 
+class FixCloseButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () {
+          Navigator.pop(context);
+        });
+  }
+}
+
 class ReloadButton extends StatelessWidget {
   final VoidCallback _onPressed;
 
@@ -150,7 +161,7 @@ class _NormalListPageState<T> extends State<NormalListPage<T>>
                     return InkWell(
                       onTap: () {
                         if (widget.onItemClick != null) {
-                          widget.onItemClick(context, data);
+                          widget.onItemClick(context, d.response[index]);
                         }
                       },
                       child: widget.builder(

@@ -24,18 +24,15 @@ class _DbUtils {
         if (_db == null) {
           var databasePath = await getDatabasesPath();
           var path = join(databasePath, _name);
-          try {
-            _db = await _openDatabaseWrapped(path, readOnly: false);
-          } on Exception catch (e) {
-            print(e);
-//            if (_db == null) {
-            ///copy db file from assets
+          var file = File(path);
+          if (await file.exists()) {
+            _db = await _openDatabaseWrapped(path, readOnly: readOnly);
+          } else {
             ByteData data = await rootBundle.load(join(_asset, _name));
             List<int> bytes =
                 data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
             await File(path).writeAsBytes(bytes);
             _db = await _openDatabaseWrapped(path, readOnly: readOnly);
-//            }
           }
         }
       });
@@ -46,7 +43,7 @@ class _DbUtils {
   Future<Database> _openDatabaseWrapped(String path,
       {bool readOnly = true, bool singleInstance = true}) async {
     return openDatabase(path,
-        readOnly: readOnly,
+        readOnly: false,
         singleInstance: singleInstance,
         version: _version,
         onUpgrade: _onUpgrade);

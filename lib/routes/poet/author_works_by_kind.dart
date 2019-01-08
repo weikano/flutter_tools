@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tools/routes/poet/const_fix.dart';
 import 'package:flutter_tools/routes/poet/db_helper.dart';
+import 'package:flutter_tools/routes/poet/poet_detail_fix.dart';
 import 'package:flutter_tools/routes/poet/styles.dart';
 import 'package:flutter_tools/widgets/commons.dart';
 
@@ -57,33 +58,38 @@ class _Body extends NormalListPage<Work> {
   final String kindId;
   _Body(this.author, this.kindId)
       : super(
-          (_, data, prev) {
-            String content = data.content;
-            content = content.substring(0, content.indexOf("。") + 1);
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    data.title,
-                    style: _styleTitle,
-                  ),
-                  Divider(
-                    height: 4,
-                    color: Colors.transparent,
-                  ),
-                  Text(
-                    content,
-                    style: _styleContent,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            );
-          },
-          PoetDbHelper().worksByAuthorAndKind(author, kindId),
-          dividerWithPadding: true,
-        );
+            (_, data, prev) {
+              String content = data.content;
+              content = content.substring(0, content.indexOf("。") + 1);
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      data.title,
+                      style: _styleTitle,
+                    ),
+                    Divider(
+                      height: 4,
+                      color: Colors.transparent,
+                    ),
+                    Text(
+                      content,
+                      style: _styleContent,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              );
+            },
+            PoetDbHelper().worksByAuthorAndKind(author, kindId),
+            dividerWithPadding: true,
+            onItemClick: (BuildContext context, dynamic data) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                return PoetDetailPageFix.fromWork(data);
+              }));
+            });
 }

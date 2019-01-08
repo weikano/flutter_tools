@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tools/routes/poet/const_fix.dart';
 import 'package:flutter_tools/routes/poet/db_helper.dart';
-import 'package:flutter_tools/routes/poet/poet_detail.dart';
+import 'package:flutter_tools/routes/poet/poet_detail_fix.dart';
 import 'package:flutter_tools/routes/poet/styles.dart';
 import 'package:flutter_tools/widgets/commons.dart';
 
@@ -31,7 +31,9 @@ class CollectionDetailPage extends StatelessWidget {
 
 class _Body extends StatefulWidget {
   final Collection item;
+
   _Body(this.item);
+
   @override
   State<StatefulWidget> createState() => _State();
 }
@@ -134,78 +136,82 @@ var _divider = Divider(
   height: 4,
 );
 
+///作品列表
 class _Works extends NormalListPage<CollectionWork> {
   final Collection collection;
+
   _Works(this.collection)
-      : super((BuildContext ctx, data, prev) {
-          return InkWell(
-            onTap: () {
-              //todo 跳转至作品详情
-              print(data);
+      : super(
+            (BuildContext ctx, data, prev) {
+              return Padding(
+                padding: padding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                            child: Text(
+                          data.work_title,
+                          style: _blackLarge,
+                        )),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          "[${data.work_dynasty}] ${data.work_author}",
+                          style: _greyMedium,
+                        ),
+                      ],
+                    ),
+                    _divider,
+                    Text(
+                      data.work_content,
+                      style: _greyMedium,
+                    ),
+                  ],
+                ),
+              );
             },
-            child: Padding(
-              padding: padding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                          child: Text(
-                        data.work_title,
-                        style: _blackLarge,
-                      )),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        "[${data.work_dynasty}] ${data.work_author}",
-                        style: _greyMedium,
-                      ),
-                    ],
-                  ),
-                  _divider,
-                  Text(
-                    data.work_content,
-                    style: _greyMedium,
-                  ),
-                ],
-              ),
-            ),
-          );
-        }, PoetDbHelper().allCollectionItemsById(collection),
-            dividerWithPadding: true);
+            PoetDbHelper().allCollectionItemsById(collection),
+            dividerWithPadding: true,
+            onItemClick: (BuildContext context, dynamic data) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                return PoetDetailPageFix.fromCollectionWork(data);
+              }));
+            });
 }
 
+///摘要列表
 class _Quotes extends NormalListPage<CollectionQuote> {
   final Collection collection;
+
   _Quotes(this.collection)
-      : super((BuildContext context, data, prev) {
-          return InkWell(
-            onTap: () {
-              //todo 跳转至摘录详情
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return WorkFromCollectionQuotePage(data);
-              }));
+      : super(
+            (BuildContext context, data, prev) {
+              return Padding(
+                padding: padding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      data.quote,
+                      style: _blackLarge,
+                    ),
+                    _divider,
+                    Text(
+                      "${data.quote_author} 《${data.quote_work}》",
+                      style: _greyMedium,
+                    ),
+                  ],
+                ),
+              );
             },
-            child: Padding(
-              padding: padding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    data.quote,
-                    style: _blackLarge,
-                  ),
-                  _divider,
-                  Text(
-                    "${data.quote_author} 《${data.quote_work}》",
-                    style: _greyMedium,
-                  ),
-                ],
-              ),
-            ),
-          );
-        }, PoetDbHelper().allQuotesByCollection(collection),
-            dividerWithPadding: true);
+            PoetDbHelper().allQuotesByCollection(collection),
+            dividerWithPadding: true,
+            onItemClick: (BuildContext context, dynamic data) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                return PoetDetailPageFix.fromCollectionQuote(data);
+              }));
+            });
 }
