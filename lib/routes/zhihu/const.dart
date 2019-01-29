@@ -34,7 +34,7 @@ class ZhihuListItem extends ZhihuStoryBase {
   String title;
   int type;
   int id;
-  DateTime date;
+  String date;
 
   ZhihuListItem.fromJSON(Map<String, dynamic> json) {
     title = optJSON(json, 'title');
@@ -58,6 +58,10 @@ class ZhihuTopItem extends ZhihuStoryBase {
     type = optJSON(json, 'type');
     id = optJSON(json, 'id');
   }
+
+  List<dynamic> toValues() {
+    return <dynamic>[id, type, image, title];
+  }
 }
 
 ///通过news接口获取到的内容
@@ -71,8 +75,7 @@ class ZhihuNews {
     List list = optJSON(json, 'stories');
     stories = list?.map((m) => ZhihuListItem.fromJSON(m))?.toList();
     stories.forEach((item) {
-      item.date = DateTime(int.parse(date.substring(0, 4)),
-          int.parse(date.substring(4, 6)), int.parse(date.substring(6, 8)));
+      item.date = date;
     });
     list = optJSON(json, 'top_stories');
     topStories = list?.map((m) => ZhihuTopItem.fromJSON(m))?.toList();

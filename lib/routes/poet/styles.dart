@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 const normalTextStyle = TextStyle();
 
-var baseTextStyle = normalTextStyle.copyWith(fontFamily: 'poet');
+//var baseTextStyle = normalTextStyle.copyWith(fontFamily: 'poet');
+var baseTextStyle = normalTextStyle;
 
 var itemTextStyle = baseTextStyle.copyWith(
   fontSize: 16,

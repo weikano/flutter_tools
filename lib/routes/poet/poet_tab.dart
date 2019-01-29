@@ -13,10 +13,10 @@ class PoetCategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           appBar: TabBar(
-            tabs: ['作品集', '作者', '作品']
+            tabs: ['作品集', '作者']
                 .map((m) => Tab(
                       child: Text(
                         m,
@@ -29,7 +29,7 @@ class PoetCategoryPage extends StatelessWidget {
           body: TabBarView(children: [
             CollectionTab(),
             AuthorTab(),
-            _DynastiesPage(),
+//            _DynastiesPage(),
           ]),
         ),
       ),
@@ -37,14 +37,28 @@ class PoetCategoryPage extends StatelessWidget {
   }
 }
 
+class PoetCategoryPageFix extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _PoetCategoryPageFixState();
+  }
+}
+
+class _PoetCategoryPageFixState extends State<PoetCategoryPageFix> {
+  @override
+  Widget build(BuildContext context) {
+    return null;
+  }
+}
+
 const _padding = EdgeInsets.only(left: 12, bottom: 8, top: 8, right: 12);
 
-class _DynastiesPage extends NormalListPage<Dynasty> {
-  _DynastiesPage()
-      : super((_, data, prev) {
-          return _Item(data.name);
-        }, PoetDbHelper().allDynasties());
-}
+//class _DynastiesPage extends NormalListPage<Dynasty> {
+//  _DynastiesPage()
+//      : super((_, data, prev) {
+//          return _Item(data.name);
+//        }, PoetDbHelper().allDynasties());
+//}
 
 class _Item extends StatelessWidget {
   final String data;
