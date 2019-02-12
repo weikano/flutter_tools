@@ -1,0 +1,21 @@
+{
+  "@@last_modified": "2019-02-12T14:52:47.896592",
+  "title": "Flutter工具盒子",
+  "@title": {
+    "description": "应用标题",
+    "type": "text",
+    "placeholders": {}
+  },
+  "click": "Click",
+  "@click": {
+    "description": "点击",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hello": "Hello~",
+  "@hello": {
+    "description": "问候",
+    "type": "text",
+    "placeholders": {}
+  }
+}

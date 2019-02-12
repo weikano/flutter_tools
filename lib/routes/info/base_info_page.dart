@@ -9,23 +9,37 @@ class BaseInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: title,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-          leading: Navigator.canPop(context)
-              ? IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              : null,
-        ),
-        body: child,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+        leading: Navigator.canPop(context)
+            ? IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            : null,
       ),
+      body: child,
     );
+//    return MaterialApp(
+//      title: title,
+//      home: Scaffold(
+//        appBar: AppBar(
+//          title: Text(title),
+//          leading: Navigator.canPop(context)
+//              ? IconButton(
+//                  icon: Icon(Icons.close),
+//                  onPressed: () {
+//                    Navigator.pop(context);
+//                  },
+//                )
+//              : null,
+//        ),
+//        body: child,
+//      ),
+//    );
   }
 
   static List<Widget> buildInfos(

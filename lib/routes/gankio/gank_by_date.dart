@@ -13,6 +13,7 @@ class _GankDateState extends State<GankDatePage>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return StreamBuilder(
       builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
         Widget content = Center(

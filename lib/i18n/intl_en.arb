@@ -1,0 +1,21 @@
+{
+  "@@last_modified": "2019-02-12T14:52:47.896592",
+  "title": "Flutter Toolbox",
+  "@title": {
+    "description": "App Title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "click": "Click",
+  "@click": {
+    "description": "Click",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hello": "Hello~",
+  "@hello": {
+    "description": "Hello",
+    "type": "text",
+    "placeholders": {}
+  }
+}

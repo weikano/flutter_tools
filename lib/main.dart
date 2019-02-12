@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tools/app_locale.dart';
+import 'package:flutter_tools/app_strings.dart';
 import 'package:flutter_tools/themes.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'data/routes.dart';
 
@@ -20,8 +23,20 @@ class MyApp extends StatelessWidget {
 //    final int columnCount =
 //        MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3;
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        AppLocale.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('zh', 'CN'),
+      ],
       theme: kLightTheme,
-      title: 'tools',
+      onGenerateTitle: (BuildContext context) {
+        return AppStrings.of(context)['title'];
+      },
+//      title: 'tools',
       home: _Home(columnCount),
       routes: _buildRoutes(),
     );
@@ -35,7 +50,7 @@ class _Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TOOLBOX'),
+        title: Text(AppStrings.of(context)['title']),
       ),
       body: GridView.count(
         crossAxisCount: columnCount,

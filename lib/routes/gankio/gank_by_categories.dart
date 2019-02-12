@@ -14,6 +14,7 @@ class _GankCategoryState extends State<GankCategoryPage>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return FutureBuilder(
       future: categories(),
       builder: (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {

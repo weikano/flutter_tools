@@ -11,6 +11,7 @@ class _GankRandomState extends State<GankRandomPage>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       color: Colors.deepOrange,
       child: Center(
