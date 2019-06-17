@@ -26,7 +26,7 @@ dependencies:
   sqflite: 0.13.0
   rx_command: 4.0.2
   url_launcher: 4.0.2
-  intl: 0.15.7
+  intl: 0.15.8
 
   html: 0.13.3+3
   share: 0.5.3
