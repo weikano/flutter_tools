@@ -24,17 +24,19 @@ dependencies:
   device_info: 0.2.0
   shared_preferences: 0.4.3
   sqflite: 0.13.0
-  rx_command: 4.0.2
+#  rx_command: 4.0.2
   url_launcher: 4.0.2
   intl: 0.15.8
 
   html: 0.13.3+3
   share: 0.5.3
 #  flare_flutter: 1.0.2
-  sticky_headers: ^0.1.7
+  sticky_headers: ^0.1.8
   flutter_sticky_header: ^0.3.4
   draggable_scrollbar: 0.0.4
-
+  
+  dio: 2.1.0
+  fish_redux: 0.2.2
 dev_dependencies:
   intl_translation: 0.17.2
   flutter_test:
